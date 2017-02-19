@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-INPUT=preprocess.py
+INPUT=/path/to/corpus
 OUTPUT=./output
 
 python preprocess.py \
