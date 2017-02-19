@@ -79,7 +79,6 @@ def write_sentences(sents, path):
 def main(path_in, path_out, prune_at, min_count):
     assert os.path.exists(path_in)
     assert os.path.exists(os.path.dirname(path_out))
-    min_count = 5
 
     # (0) Loading the corpus
     sents = load_sentences(path=path_in)
@@ -153,8 +152,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", help="path to input corpus", type=str, required=True)
     parser.add_argument("--output", help="path to output corpus", type=str, required=True)
-    parser.add_argument("--prune_at", help="prune_at", type=str, default=300000)
-    parser.add_argument("--min_count", help="min_count", type=str, default=5)
+    parser.add_argument("--prune_at", help="prune_at", type=int, default=300000)
+    parser.add_argument("--min_count", help="min_count", type=int, default=5)
     args = parser.parse_args()
 
     path_in = args.input
