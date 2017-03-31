@@ -96,6 +96,8 @@ def main(path_in, path_out, prune_at, min_count):
     write_sentences(sents, path=path_out)
     print "Wrote to %s" %  path_out
 
+    #-----------------------------------------------------------
+
     # (6.1) Reconstructing a dictionary
     dictionary = gensim.corpora.Dictionary(sents, prune_at=None)
     vocab = dictionary.token2id
