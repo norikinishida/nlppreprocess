@@ -78,7 +78,7 @@ def main(path_in, path_out, prune_at, min_count):
     print "Constructing a temporal dictionary ..."
     dictionary = gensim.corpora.Dictionary(sents, prune_at=prune_at)
     dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
-    print "Vocabulary size: %d" % len(dictionary.token2id)
+    print "Vocabulary size: %d (w/o '<UNK>')" % len(dictionary.token2id)
 
     # (5.2) Replacing rare words with '<UNK>'
     sents = replace_words_with_UNK(sents, dictionary.token2id, "<UNK>")
@@ -92,32 +92,8 @@ def main(path_in, path_out, prune_at, min_count):
     print "# of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total*100)
 
-    print "Writing ..."
     write_sentences(sents, path=path_out)
     print "Wrote to %s" %  path_out
-
-    #-----------------------------------------------------------
-
-    # (6.1) Reconstructing a dictionary
-    dictionary = gensim.corpora.Dictionary(sents, prune_at=None)
-    vocab = dictionary.token2id
-    # ivocab = {w_id:w for w, w_id in vocab.items()}
-    print "Vocabulary size: %d" % len(vocab)
-    dictionary.save_as_text(path_out + ".dictionary")
-    print "Saved the dictionary to %s" % (path_out + ".dictionary")
-    
-    # (6.2) Transforming words to IDs
-    sents = FakeGenerator(sents,
-            lambda sents_: sents_
-                >> map(lambda s: [vocab[w] for w in s]))
-   
-    print "Writing ..."
-    sents = FakeGenerator(sents,
-            lambda sents_: sents_
-                >> map(lambda s: [str(w) for w in s]))
-    write_sentences(sents, path=path_out + ".wordids")
-    print "Wrote to %s" % (path_out + ".wordids")
-    print "Done."
 
 
 if __name__ == "__main__":

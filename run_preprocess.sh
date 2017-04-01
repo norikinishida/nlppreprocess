@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 
-INPUT=/path/to/corpus
+INPUT=./preprocess.py
 OUTPUT=./output
 
 python preprocess.py \
-    -i $INPUT \
-    -o $OUTPUT 
+    --input $INPUT \
+    --output $OUTPUT 
+
+python create_wordids.py \
+    --corpus $OUTPUT
