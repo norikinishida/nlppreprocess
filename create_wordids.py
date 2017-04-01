@@ -23,9 +23,9 @@ def main(path):
     # construct a dictionary
     dictionary = gensim.corpora.Dictionary(sents, prune_at=None)
     vocab = dictionary.token2id
-    print "Vocabulary size: %d" % len(vocab)
+    print "[info] Vocabulary size: %d" % len(vocab)
     dictionary.save_as_text(path + ".dictionary")
-    print "Saved the dictionary to %s" % (path + ".dictionary")
+    print "[info] Saved the dictionary to %s" % (path + ".dictionary")
     
     # transform to wordids
     sents = FakeGenerator(sents,
@@ -37,9 +37,9 @@ def main(path):
             lambda sents_: sents_
                 >> map(lambda s: [str(w) for w in s]))
     write_sentences(sents, path=path + ".wordids")
-    print "Wrote to %s" % (path + ".wordids")
+    print "[info] Wrote to %s" % (path + ".wordids")
 
-    print "Done."
+    print "[info] Done."
 
 
 if __name__ == "__main__":

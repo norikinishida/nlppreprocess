@@ -75,10 +75,10 @@ def main(path_in, path_out, prune_at, min_count):
                 >> map(lambda s: s + ["<EOS>"]))
 
     # (5.1) Constructing a temporal dictionary
-    print "Constructing a temporal dictionary ..."
+    print "[info] Constructing a temporal dictionary ..."
     dictionary = gensim.corpora.Dictionary(sents, prune_at=prune_at)
     dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
-    print "Vocabulary size: %d (w/o '<UNK>')" % len(dictionary.token2id)
+    print "[info] Vocabulary size: %d (w/o '<UNK>')" % len(dictionary.token2id)
 
     # (5.2) Replacing rare words with '<UNK>'
     sents = replace_words_with_UNK(sents, dictionary.token2id, "<UNK>")
@@ -89,11 +89,13 @@ def main(path_in, path_out, prune_at, min_count):
             if w == "<UNK>":
                 n_unk += 1
         n_total += len(s)
-    print "# of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
+    print "[info] # of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total*100)
 
     write_sentences(sents, path=path_out)
-    print "Wrote to %s" %  path_out
+    print "[info] Wrote to %s" %  path_out
+
+    print "[info] Done."
 
 
 if __name__ == "__main__":
