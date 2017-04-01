@@ -23,7 +23,6 @@ def main(path):
     # construct a dictionary
     dictionary = gensim.corpora.Dictionary(sents, prune_at=None)
     vocab = dictionary.token2id
-    # ivocab = {i:w for w,i in vocab.items()}
     print "Vocabulary size: %d" % len(vocab)
     dictionary.save_as_text(path + ".dictionary")
     print "Saved the dictionary to %s" % (path + ".dictionary")
