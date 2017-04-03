@@ -44,14 +44,23 @@ def preprocess_sentences(
         lowercase,
         replace_digits,
         append_eos,
-        replace_rare, prune_at, min_count):
+        replace_rare, prune_at=-1, min_count=-1):
+    print type(append_eos)
+    if append_eos:
+        print "EOS YES!"
+    else:
+        print "EOS NO.."
     print "[info] Preprocessing sentences ..."
     print "[info] LOWERCASE?: %s" % lowercase
     print "[info] REPLACE DIGITS?: %s" % replace_digits
     print "[info] APPEND '<EOS>'?: %s" % append_eos
     print "[info] REPLACE RARE WORDS?: %s" % replace_rare
     print "[info] PRUNE AT: %s" % prune_at
-    print "[info] MINIMUM COUNT: %d" % min_count
+    print "[info] MINIMUM COUNT: %s" % min_count
+
+    if replace_rare:
+        assert prune_at >= 0
+        assert min_count >= 0
 
     # (1) Tokenizing
     sents = FakeGenerator(sents,
@@ -139,20 +148,20 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", help="path to input corpus", type=str, required=True)
     parser.add_argument("--output", help="path to output corpus", type=str, required=True)
-    parser.add_argument("--lowercase", help="lowercase?", type=bool, default=True)
-    parser.add_argument("--replace_digits", help="replace digits?", type=bool, default=True)
-    parser.add_argument("--append_eos", help="append '<EOS>' tokens?", type=bool, default=True)
-    parser.add_argument("--replace_rare", help="replace rare words?", type=bool, default=True)
+    parser.add_argument("--lowercase", help="lowercase?", type=int, default=True)
+    parser.add_argument("--replace_digits", help="replace digits?", type=int, default=True)
+    parser.add_argument("--append_eos", help="append '<EOS>' tokens?", type=int, default=True)
+    parser.add_argument("--replace_rare", help="replace rare words?", type=int, default=True)
     parser.add_argument("--prune_at", help="prune_at", type=int, default=1000000)
     parser.add_argument("--min_count", help="min_count", type=int, default=0)
     args = parser.parse_args()
 
     path_in = args.input
     path_out = args.output
-    lowercase = args.lowercase
-    replace_digits = args.replace_digits
-    append_eos = args.append_eos
-    replace_rare = args.replace_rare
+    lowercase = bool(args.lowercase)
+    replace_digits = bool(args.replace_digits)
+    append_eos = bool(args.append_eos)
+    replace_rare = bool(args.replace_rare)
     prune_at = args.prune_at
     min_count = args.min_count
 
