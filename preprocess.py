@@ -57,18 +57,21 @@ def preprocess_sentences(
         assert prune_at >= 0
         assert min_count >= 0
 
-    # (1) Tokenizing
+    # (1) Converting words to lower case
+    if lowercase:
+        # sents = FakeGenerator(sents,
+        #     lambda sents_: sents_ 
+        #         >> map(lambda s: [w.lower() for w in s]))
+        sents = FakeGenerator(sents,
+            lambda sents_: sents_ 
+                >> map(lambda s: s.lower()))
+
+    # (2) Tokenizing
     sents = FakeGenerator(sents,
             lambda sents_: sents_
                 >> map(lambda s: tokenize(s))
                 >> filter(lambda s: len(s) != 0))
     
-    # (2) Converting words to lower case
-    if lowercase:
-        sents = FakeGenerator(sents,
-            lambda sents_: sents_ 
-                >> map(lambda s: [w.lower() for w in s]))
-
     # (3) Replacing digits with '7'
     if replace_digits:
         sents = FakeGenerator(sents,
