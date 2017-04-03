@@ -5,7 +5,12 @@ OUTPUT=./output
 
 python preprocess.py \
     --input $INPUT \
-    --output $OUTPUT 
+    --output $OUTPUT \
+    --lowercase True \
+    --replace_digits True \
+    --append_eos True \
+    --prune_at 300000 \
+    --min_count 5 
 
 python create_wordids.py \
     --corpus $OUTPUT

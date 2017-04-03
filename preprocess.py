@@ -46,9 +46,17 @@ def write_sentences(sents, path):
             f.write(line)
 
 
-def main(path_in, path_out, prune_at, min_count):
+def main(path_in, path_out, lowercase, replace_digits, append_eos, prune_at, min_count):
     assert os.path.exists(path_in)
     assert os.path.exists(os.path.dirname(path_out))
+
+    print "[info] INPUT: %s" % path_in
+    print "[info] OUTPUT: %s" % path_out
+    print "[info] LOWERCASE?: %s" % lowercase
+    print "[info] REPLACE DIGITS?: %s" % replace_digits
+    print "[info] APPEND '<EOS>'?: %s" % append_eos
+    print "[info] PRUNE AT: %d" % prune_at
+    print "[info] MINIMUM COUNT: %d" % min_count
 
     # (0) Loading the corpus
     sents = load_sentences(path=path_in)
@@ -58,19 +66,22 @@ def main(path_in, path_out, prune_at, min_count):
             lambda sents_: sents_
                 >> map(lambda s: tokenize(s))
                 >> filter(lambda s: len(s) != 0))
-
+    
     # (2) Converting words to lower case
-    sents = FakeGenerator(sents,
+    if lowercase:
+        sents = FakeGenerator(sents,
             lambda sents_: sents_ 
                 >> map(lambda s: [w.lower() for w in s]))
 
     # (3) Replacing digits with '7'
-    sents = FakeGenerator(sents,
+    if replace_digits:
+        sents = FakeGenerator(sents,
             lambda sents_: sents_
                 >> map(lambda s: [re.sub(r"\d", "7", w) for w in s]))
 
     # (4) Appending '<EOS>' tokens for each sentence
-    sents = FakeGenerator(sents,
+    if append_eos:
+        sents = FakeGenerator(sents,
             lambda sents_: sents_
                 >> map(lambda s: s + ["<EOS>"]))
 
@@ -102,6 +113,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", help="path to input corpus", type=str, required=True)
     parser.add_argument("--output", help="path to output corpus", type=str, required=True)
+    parser.add_argument("--lowercase", help="lowercase?", type=bool, default=True)
+    parser.add_argument("--replace_digits", help="replace digits?", type=bool, default=True)
+    parser.add_argument("--append_eos", help="append '<EOS>' tokens?", type=bool, default=True)
     parser.add_argument("--prune_at", help="prune_at", type=int, default=300000)
     parser.add_argument("--min_count", help="min_count", type=int, default=5)
     args = parser.parse_args()
