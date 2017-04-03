@@ -10,7 +10,7 @@ python preprocess.py \
     --replace_digits True \
     --append_eos True \
     --prune_at 300000 \
-    --min_count 5 
+    --min_count 0 
 
 python create_wordids.py \
     --corpus $OUTPUT

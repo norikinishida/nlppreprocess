@@ -39,27 +39,13 @@ def replace_words_with_UNK(sents, vocab, UNK):
             lambda sents_: sents_ >> map(lambda s: [identical.get(w, "<UNK>") for w in s]))
 
 
-def write_sentences(sents, path):
-    with open(path, "w") as f:
-        for s in sents:
-            line = " ".join(s).encode("utf-8") + "\n"
-            f.write(line)
-
-
-def main(path_in, path_out, lowercase, replace_digits, append_eos, prune_at, min_count):
-    assert os.path.exists(path_in)
-    assert os.path.exists(os.path.dirname(path_out))
-
-    print "[info] INPUT: %s" % path_in
-    print "[info] OUTPUT: %s" % path_out
+def preprocess_sentences(sents, lowercase, replace_digits, append_eos, prune_at, min_count):
+    print "[info] Preprocessing sentences ..."
     print "[info] LOWERCASE?: %s" % lowercase
     print "[info] REPLACE DIGITS?: %s" % replace_digits
     print "[info] APPEND '<EOS>'?: %s" % append_eos
     print "[info] PRUNE AT: %d" % prune_at
     print "[info] MINIMUM COUNT: %d" % min_count
-
-    # (0) Loading the corpus
-    sents = load_sentences(path=path_in)
 
     # (1) Tokenizing
     sents = FakeGenerator(sents,
@@ -102,10 +88,37 @@ def main(path_in, path_out, lowercase, replace_digits, append_eos, prune_at, min
     print "[info] # of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total*100)
 
+    return sents
+
+
+def main(path_in, path_out, lowercase, replace_digits, append_eos, prune_at, min_count):
+    assert os.path.exists(path_in)
+    assert os.path.exists(os.path.dirname(path_out))
+
+    print "[info] INPUT: %s" % path_in
+    print "[info] OUTPUT: %s" % path_out
+
+    sents = load_sentences(path=path_in)
+
+    sents = preprocess_sentences(
+            sents,
+            lowercase=lowercase,
+            replace_digits=replace_digits,
+            append_eos=append_eos,
+            prune_at=prune_at,
+            min_count=min_count)
+
     write_sentences(sents, path=path_out)
     print "[info] Wrote to %s" %  path_out
 
     print "[info] Done."
+
+
+def write_sentences(sents, path):
+    with open(path, "w") as f:
+        for s in sents:
+            line = " ".join(s).encode("utf-8") + "\n"
+            f.write(line)
 
 
 if __name__ == "__main__":
