@@ -46,7 +46,6 @@ def preprocess_sentences(
         append_eos,
         replace_rare, prune_at=-1, min_count=-1):
 
-    print "[info] Preprocessing sentences ..."
     print "[info] LOWERCASE?: %s" % lowercase
     print "[info] REPLACE DIGITS?: %s" % replace_digits
     print "[info] APPEND '<EOS>'?: %s" % append_eos
