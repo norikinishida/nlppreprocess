@@ -45,11 +45,7 @@ def preprocess_sentences(
         replace_digits,
         append_eos,
         replace_rare, prune_at=-1, min_count=-1):
-    print type(append_eos)
-    if append_eos:
-        print "EOS YES!"
-    else:
-        print "EOS NO.."
+
     print "[info] Preprocessing sentences ..."
     print "[info] LOWERCASE?: %s" % lowercase
     print "[info] REPLACE DIGITS?: %s" % replace_digits
