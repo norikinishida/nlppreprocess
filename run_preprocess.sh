@@ -9,7 +9,8 @@ python preprocess.py \
     --lowercase True \
     --replace_digits True \
     --append_eos True \
-    --prune_at 300000 \
+    --replace_rare True \
+    --prune_at 1000000 \
     --min_count 0 
 
 python create_wordids.py \

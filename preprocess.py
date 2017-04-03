@@ -39,12 +39,18 @@ def replace_words_with_UNK(sents, vocab, UNK):
             lambda sents_: sents_ >> map(lambda s: [identical.get(w, "<UNK>") for w in s]))
 
 
-def preprocess_sentences(sents, lowercase, replace_digits, append_eos, prune_at, min_count):
+def preprocess_sentences(
+        sents,
+        lowercase,
+        replace_digits,
+        append_eos,
+        replace_rare, prune_at, min_count):
     print "[info] Preprocessing sentences ..."
     print "[info] LOWERCASE?: %s" % lowercase
     print "[info] REPLACE DIGITS?: %s" % replace_digits
     print "[info] APPEND '<EOS>'?: %s" % append_eos
-    print "[info] PRUNE AT: %d" % prune_at
+    print "[info] REPLACE RARE WORDS?: %s" % replace_rare
+    print "[info] PRUNE AT: %s" % prune_at
     print "[info] MINIMUM COUNT: %d" % min_count
 
     # (1) Tokenizing
@@ -71,27 +77,41 @@ def preprocess_sentences(sents, lowercase, replace_digits, append_eos, prune_at,
             lambda sents_: sents_
                 >> map(lambda s: s + ["<EOS>"]))
 
-    # (5.1) Constructing a temporal dictionary
-    dictionary = gensim.corpora.Dictionary(sents, prune_at=prune_at)
-    dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
-    print "[info] Vocabulary size: %d (w/o '<UNK>')" % len(dictionary.token2id)
+    # (5) Replacing rare words with '<UNK>' tokens
+    if replace_rare:
+        # temporal dictionary
+        dictionary = gensim.corpora.Dictionary(sents, prune_at=prune_at)
+        dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
+        print "[info] Vocabulary size: %d (w/o '<UNK>')" % len(dictionary.token2id)
 
-    # (5.2) Replacing rare words with '<UNK>'
-    sents = replace_words_with_UNK(sents, dictionary.token2id, "<UNK>")
-    n_unk = 0
-    n_total = 0
-    for s in sents:
-        for w in s:
-            if w == "<UNK>":
-                n_unk += 1
-        n_total += len(s)
-    print "[info] # of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
+        sents = replace_words_with_UNK(sents, dictionary.token2id, "<UNK>")
+
+        n_unk = 0
+        n_total = 0
+        for s in sents:
+            for w in s:
+                if w == "<UNK>":
+                    n_unk += 1
+            n_total += len(s)
+        print "[info] # of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total*100)
+    
+    return list(sents)
 
-    return sents
+
+def write_sentences(sents, path):
+    with open(path, "w") as f:
+        for s in sents:
+            line = " ".join(s).encode("utf-8") + "\n"
+            f.write(line)
 
 
-def main(path_in, path_out, lowercase, replace_digits, append_eos, prune_at, min_count):
+def main(
+        path_in, path_out,
+        lowercase,
+        replace_digits,
+        append_eos, 
+        replace_rare, prune_at, min_count):
     assert os.path.exists(path_in)
     assert os.path.exists(os.path.dirname(path_out))
 
@@ -105,6 +125,7 @@ def main(path_in, path_out, lowercase, replace_digits, append_eos, prune_at, min
             lowercase=lowercase,
             replace_digits=replace_digits,
             append_eos=append_eos,
+            replace_rare=replace_rare,
             prune_at=prune_at,
             min_count=min_count)
 
@@ -114,13 +135,6 @@ def main(path_in, path_out, lowercase, replace_digits, append_eos, prune_at, min
     print "[info] Done."
 
 
-def write_sentences(sents, path):
-    with open(path, "w") as f:
-        for s in sents:
-            line = " ".join(s).encode("utf-8") + "\n"
-            f.write(line)
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", help="path to input corpus", type=str, required=True)
@@ -128,8 +142,9 @@ if __name__ == "__main__":
     parser.add_argument("--lowercase", help="lowercase?", type=bool, default=True)
     parser.add_argument("--replace_digits", help="replace digits?", type=bool, default=True)
     parser.add_argument("--append_eos", help="append '<EOS>' tokens?", type=bool, default=True)
-    parser.add_argument("--prune_at", help="prune_at", type=int, default=300000)
-    parser.add_argument("--min_count", help="min_count", type=int, default=5)
+    parser.add_argument("--replace_rare", help="replace rare words?", type=bool, default=True)
+    parser.add_argument("--prune_at", help="prune_at", type=int, default=1000000)
+    parser.add_argument("--min_count", help="min_count", type=int, default=0)
     args = parser.parse_args()
 
     path_in = args.input
@@ -137,6 +152,7 @@ if __name__ == "__main__":
     lowercase = args.lowercase
     replace_digits = args.replace_digits
     append_eos = args.append_eos
+    replace_rare = args.replace_rare
     prune_at = args.prune_at
     min_count = args.min_count
 
@@ -146,5 +162,6 @@ if __name__ == "__main__":
         lowercase=lowercase,
         replace_digits=replace_digits,
         append_eos=append_eos,
+        replace_rare=replace_rare,
         prune_at=prune_at,
         min_count=min_count)
