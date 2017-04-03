@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
 
-INPUT=./preprocess.py
-OUTPUT=./output
+INPUT=/mnt/hdd/dataset/Book-Corpus/books_large.merge.head_50000.txt
+OUTPUT=./books_large.merge.head_50000.txt.preprocessed
 
 python preprocess.py \
     --input $INPUT \
     --output $OUTPUT \
+    --corenlp 1 \
     --lowercase 1 \
     --replace_digits 1 \
     --append_eos 1 \

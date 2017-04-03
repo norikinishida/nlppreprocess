@@ -5,6 +5,7 @@
 """
 
 import argparse
+import commands
 import os
 import re
 
@@ -24,13 +25,70 @@ def load_sentences(path):
 
 
 sent_detector = nltk.data.load("tokenizers/punkt/english.pickle")
-def tokenize(sent):
+def tokenize_with_nltk(sent):
     sent = sent.strip()
     all_words = []
     for s in sent_detector.tokenize(sent):
         words = word_tokenize(s)
         all_words.extend(words)
     return all_words
+
+
+def tokenize_with_stanfordcorenlp(path=None, sents=None):
+    if path is None:
+        assert sents is not None
+    if sents is None:
+        assert path is not None
+
+    if path is not None:
+        create_properties(path)
+        output = commands.getoutput("./corenlp.sh") 
+        # print output
+        sents = load_conll("./" + os.path.basename(path) + ".conll")
+        return sents
+    else:
+        dump_sentences(sents)
+        create_properties("./tmp.txt")
+        output = commands.getoutput("./corenlp.sh")
+        # print output
+        sents = load_conll("./tmp.txt.conll")
+        return sents
+
+
+def create_properties(path):
+    with open("tmp.properties", "w") as f:
+        f.write("annotators = tokenize, ssplit\n")
+        f.write("ssplit.eolonly = true\n")
+        f.write("outputFormat = conll\n")
+        f.write("file = %s\n" % path)
+
+
+def dump_sentences(sents):
+    with open("tmp.txt", "w") as f:
+        for s in sents:
+            s = s.strip()
+            f.write("%s\n" % s.encode("utf-8"))
+
+
+def load_conll(path):
+    sents = []
+    sent = []
+    for line in open(path):
+        line = line.decode("utf-8").strip().split()
+        if len(line) == 0:
+            continue
+        index = int(line[0])
+        word = line[1]
+        if index == 1:
+            if len(sent) != 0:
+                sents.append(sent)
+                sent = []
+            else:
+                pass
+        sent.append(word)
+    if len(sent) != 0:
+        sents.append(sent)
+    return sents
 
 
 def replace_words_with_UNK(sents, vocab, UNK):
@@ -41,11 +99,13 @@ def replace_words_with_UNK(sents, vocab, UNK):
 
 def preprocess_sentences(
         sents,
+        corenlp,
         lowercase,
         replace_digits,
         append_eos,
         replace_rare, prune_at=-1, min_count=-1):
 
+    print "[info] USE StanfordCoreNLP?: %s" % corenlp
     print "[info] LOWERCASE?: %s" % lowercase
     print "[info] REPLACE DIGITS?: %s" % replace_digits
     print "[info] APPEND '<EOS>'?: %s" % append_eos
@@ -57,21 +117,28 @@ def preprocess_sentences(
         assert prune_at >= 0
         assert min_count >= 0
 
-    # (1) Converting words to lower case
-    if lowercase:
-        # sents = FakeGenerator(sents,
-        #     lambda sents_: sents_ 
-        #         >> map(lambda s: [w.lower() for w in s]))
-        sents = FakeGenerator(sents,
-            lambda sents_: sents_ 
-                >> map(lambda s: s.lower()))
+    if corenlp:
+        # (1) Tokenizing
+        sents = tokenize_with_stanfordcorenlp(sents=sents)
 
-    # (2) Tokenizing
-    sents = FakeGenerator(sents,
-            lambda sents_: sents_
-                >> map(lambda s: tokenize(s))
-                >> filter(lambda s: len(s) != 0))
-    
+        # (2) Converting words to lower case
+        if lowercase:
+            sents = FakeGenerator(sents,
+                lambda sents_: sents_ 
+                    >> map(lambda s: [w.lower() for w in s]))
+    else:
+        # (1) Converting words to lower case
+        if lowercase:
+            sents = FakeGenerator(sents,
+                lambda sents_: sents_ 
+                    >> map(lambda s: s.lower()))
+
+        # (2) Tokenizing
+        sents = FakeGenerator(sents,
+                lambda sents_: sents_
+                    >> map(lambda s: tokenize_with_nltk(s))
+                    >> filter(lambda s: len(s) != 0))
+
     # (3) Replacing digits with '7'
     if replace_digits:
         sents = FakeGenerator(sents,
@@ -115,6 +182,7 @@ def write_sentences(sents, path):
 
 def main(
         path_in, path_out,
+        corenlp,
         lowercase,
         replace_digits,
         append_eos, 
@@ -129,6 +197,7 @@ def main(
 
     sents = preprocess_sentences(
             sents,
+            corenlp=corenlp,
             lowercase=lowercase,
             replace_digits=replace_digits,
             append_eos=append_eos,
@@ -146,6 +215,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", help="path to input corpus", type=str, required=True)
     parser.add_argument("--output", help="path to output corpus", type=str, required=True)
+    parser.add_argument("--corenlp", help="use corenlp?", type=int, default=True)
     parser.add_argument("--lowercase", help="lowercase?", type=int, default=True)
     parser.add_argument("--replace_digits", help="replace digits?", type=int, default=True)
     parser.add_argument("--append_eos", help="append '<EOS>' tokens?", type=int, default=True)
@@ -156,6 +226,7 @@ if __name__ == "__main__":
 
     path_in = args.input
     path_out = args.output
+    corenlp = bool(args.corenlp)
     lowercase = bool(args.lowercase)
     replace_digits = bool(args.replace_digits)
     append_eos = bool(args.append_eos)
@@ -166,6 +237,7 @@ if __name__ == "__main__":
     main(
         path_in=path_in,
         path_out=path_out,
+        corenlp=corenlp,
         lowercase=lowercase,
         replace_digits=replace_digits,
         append_eos=append_eos,
