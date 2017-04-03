@@ -19,14 +19,14 @@ from generators import StartGenerator, FakeGenerator, ChainGenerator
 def load_sentences(path):
     sents = StartGenerator(path)
     sents = FakeGenerator(sents,
-            lambda sents_: sents_ >> map(lambda s: s.strip().decode("utf-8")))
+            lambda sents_: sents_ >> map(lambda s: s.decode("utf-8")))
     return sents
 
 
 sent_detector = nltk.data.load("tokenizers/punkt/english.pickle")
 def tokenize(s):
-    # return s.split()
     words = []
+    s = s.strip()
     for s_i in sent_detector.tokenize(s):
         words_i = word_tokenize(s_i)
         words.extend(words_i)
@@ -86,7 +86,6 @@ def main(path_in, path_out, lowercase, replace_digits, append_eos, prune_at, min
                 >> map(lambda s: s + ["<EOS>"]))
 
     # (5.1) Constructing a temporal dictionary
-    print "[info] Constructing a temporal dictionary ..."
     dictionary = gensim.corpora.Dictionary(sents, prune_at=prune_at)
     dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
     print "[info] Vocabulary size: %d (w/o '<UNK>')" % len(dictionary.token2id)
@@ -122,7 +121,17 @@ if __name__ == "__main__":
 
     path_in = args.input
     path_out = args.output
+    lowercase = args.lowercase
+    replace_digits = args.replace_digits
+    append_eos = args.append_eos
     prune_at = args.prune_at
     min_count = args.min_count
 
-    main(path_in=path_in, path_out=path_out, prune_at=prune_at, min_count=min_count)
+    main(
+        path_in=path_in,
+        path_out=path_out,
+        lowercase=lowercase,
+        replace_digits=replace_digits,
+        append_eos=append_eos,
+        prune_at=prune_at,
+        min_count=min_count)
