@@ -4,42 +4,30 @@ import argparse
 import os
 
 import gensim
-from stream import *
 
-from preprocess import load_sentences, write_sentences
-from generators import FakeGenerator
+import utils
 
 
 def main(path):
     assert os.path.exists(path)
 
-    sents = load_sentences(path)
+    sents = utils.read_sentences(path)
 
-    # split
-    sents = FakeGenerator(sents,
-            lambda sents_: sents_
-                >> map(lambda s: s.split()))
-    
     # construct a dictionary
+    print "[nlppreprocess.create_wordids] Processing ..."
     dictionary = gensim.corpora.Dictionary(sents, prune_at=None)
     vocab = dictionary.token2id
-    print "[info] Vocabulary size: %d" % len(vocab)
+    print "[nlppreprocess.create_wordids] Vocabulary size: %d" % len(vocab)
     dictionary.save_as_text(path + ".dictionary")
-    print "[info] Saved the dictionary to %s" % (path + ".dictionary")
+    print "[nlppreprocess.create_wordids] Saved the dictionary to %s" % (path + ".dictionary")
     
     # transform to wordids
-    sents = FakeGenerator(sents,
-            lambda sents_: sents_
-                >> map(lambda s: [vocab[w] for w in s]))
+    sents = [[vocab[w] for w in s] for s in sents]
 
     # write
-    sents = FakeGenerator(sents,
-            lambda sents_: sents_
-                >> map(lambda s: [str(w) for w in s]))
-    write_sentences(sents, path=path + ".wordids")
-    print "[info] Wrote to %s" % (path + ".wordids")
-
-    print "[info] Done."
+    sents = [[str(w) for w in s] for s in sents]
+    utils.write_sentences(sents, path_out=path + ".wordids")
+    print "[nlppreprocess.create_wordids] Wrote to %s" % (path + ".wordids")
 
 
 if __name__ == "__main__":
