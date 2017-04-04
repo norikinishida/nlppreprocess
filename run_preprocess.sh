@@ -22,7 +22,7 @@ python lowercase.py \
 
 python tokenizer.py \
     --input $TMP \
-    --output $TMP \
+    --output $TMP
 
 python replace_digits.py \
     --input $TMP \
