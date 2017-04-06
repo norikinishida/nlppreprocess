@@ -7,21 +7,29 @@ import gensim
 import utils
 
 
-def replace_rare_words(sents, prune_at, min_count):
-    print "[nlppreprocess.replace_rare_words] Processing ..."
+class ReplaceRareWords(object):
+    def __init__(self, iterator, prune_at, min_count):
+        self.iterator = iterator
+        self.vocab = self.create_dictionary(prune_at, min_count)
 
-    # temporal dictionary
-    dictionary = gensim.corpora.Dictionary(sents, prune_at=prune_at)
-    dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
-    vocab = dictionary.token2id
-    print "[nlppreprocess.replace_rare_words] Vocabulary size: %d (w/o '<UNK>')" % len(vocab)
+    def __iter__(self):
+        identical = dict(zip(self.vocab, self.vocab))
+        for s in self.iterator:
+            yield [identical.get(w, "<UNK>") for w in s]
 
-    identical = dict(zip(vocab, vocab))
-    sents = [[identical.get(w, "<UNK>") for w in s] for s in sents]
+    def create_dictionary(self, prune_at, min_count):
+        # temporal dictionary
+        dictionary = gensim.corpora.Dictionary(self.iterator, prune_at=prune_at)
+        dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
+        vocab = dictionary.token2id
+        print "[nlppreprocess.replace_rare_words] Vocabulary size: %d (w/o '<UNK>')" % len(vocab)
+        return vocab
 
+
+def count_UNK_rate(iterator):
     n_unk = 0
     n_total = 0
-    for s in sents:
+    for s in iterator:
         for w in s:
             if w == "<UNK>":
                 n_unk += 1
@@ -29,13 +37,13 @@ def replace_rare_words(sents, prune_at, min_count):
     print "[nlppreprocess.replace_rare_words] # of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
 
-    return sents
-
 
 def main(path_in, path_out, prune_at, min_count):
-    sents = utils.read_sentences(path_in)
-    sents = replace_rare_words(sents, prune_at, min_count)
-    utils.write_sentences(sents, path_out)
+    print "[nlppreprocess.replace_rare_words] Processing ..."
+    iterator = utils.read_sentences(path_in)
+    iterator = ReplaceRareWords(iterator, prune_at, min_count)
+    count_UNK_rate(iterator)
+    utils.write_sentences(iterator, path_out)
 
 
 if __name__ == "__main__":

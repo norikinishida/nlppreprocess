@@ -5,15 +5,20 @@ import argparse
 import utils
 
 
-def lowercase(sents):
-    print "[nlppreprocess.lowercase] Processing ..."
-    return [[w.lower() for w in s] for s in sents]
+class Lowercase(object):
+    def __init__(self, iterator):
+        self.iterator = iterator
+
+    def __iter__(self):
+        for s in self.iterator:
+            yield [w.lower() for w in s]
 
 
 def main(path_in, path_out):
-    sents = utils.read_sentences(path_in)
-    sents = lowercase(sents)
-    utils.write_sentences(sents, path_out)
+    print "[nlppreprocess.lowercase] Processing ...",
+    iterator = utils.read_sentences(path_in)
+    iterator = Lowercase(iterator)
+    utils.write_sentences(iterator, path_out)
 
 
 if __name__ == "__main__":

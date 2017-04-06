@@ -6,15 +6,20 @@ import re
 import utils
 
 
-def replace_digits(sents):
-    print "[nlppreprocess.replace_digits] Processing ..."
-    return [[re.sub(r"\d", "7", w) for w in s] for s in sents]
+class ReplaceDigits(object):
+    def __init__(self, iterator):
+        self.iterator = iterator
+
+    def __iter__(self):
+        for s in self.iterator:
+            yield [re.sub(r"\d", "7", w) for w in s]
 
 
 def main(path_in, path_out):
-    sents = utils.read_sentences(path_in)
-    sents = replace_digits(sents)
-    utils.write_sentences(sents, path_out)
+    print "[nlppreprocess.replace_digits] Processing ..."
+    iterator = utils.read_sentences(path_in)
+    iterator = ReplaceDigits(iterator)
+    utils.write_sentences(iterator, path_out)
 
 
 if __name__ == "__main__":

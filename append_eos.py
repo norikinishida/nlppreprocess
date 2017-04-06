@@ -5,15 +5,20 @@ import argparse
 import utils
 
 
-def append_eos(sents):
-    print "[nlppreprocess.append_eos] Processing ..."
-    return [s + ["<EOS>"] for s in sents]
+class AppendEOS(object):
+    def __init__(self, iterator):
+        self.iterator = iterator
+
+    def __iter__(self):
+        for s in self.iterator:
+            yield s + ["<EOS>"]
 
 
 def main(path_in, path_out):
-    sents = utils.read_sentences(path_in)
-    sents = append_eos(sents)
-    utils.write_sentences(sents, path_out)
+    print "[nlppreprocess.append_eos] Processing ..."
+    iterator = utils.read_sentences(path_in)
+    iterator = AppendEOS(iterator)
+    utils.write_sentences(iterator, path_out)
 
 
 if __name__ == "__main__":

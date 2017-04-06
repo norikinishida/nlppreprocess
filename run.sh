@@ -6,7 +6,7 @@ OUTPUT=./books_large.merge.head_50000.txt.preprocessed
 
 python lowercase.py \
     --input $INPUT \
-    --output $TMP
+    --output $TMP.lowercase
 
 # echo "[nlppreprocess;StanfordCoreNLP] Processing ..."
 # rm tmp.properties
@@ -14,29 +14,29 @@ python lowercase.py \
 # echo "annotators = tokenize, ssplit" >> tmp.properties
 # echo "ssplit.eolonly = true" >> tmp.properties
 # echo "outputFormat = conll" >> tmp.properties
-# echo "file = $TMP" >> tmp.properties
+# echo "file = $TMP.lowercase" >> tmp.properties
 # java -Xmx10g edu.stanford.nlp.pipeline.StanfordCoreNLP -props tmp.properties
 # python conll2lines.py \
-#     --input $TMP.conll \
-#     --output $TMP
+#     --input $TMP.lowercase.conll \
+#     --output $TMP.tokenize
 
 python tokenizer.py \
-    --input $TMP \
-    --output $TMP
+    --input $TMP.lowercase \
+    --output $TMP.tokenize
 
 python replace_digits.py \
-    --input $TMP \
-    --output $TMP
+    --input $TMP.tokenize \
+    --output $TMP.replace_digits
 
 python append_eos.py \
-    --input $TMP \
-    --output $TMP
+    --input $TMP.replace_digits \
+    --output $TMP.append_eos
 
 python replace_rare_words.py \
-    --input $TMP \
+    --input $TMP.append_eos \
     --output $OUTPUT \
     --prune_at 300000 \
-    --min_count 5
+    --min_count 0
 
-python create_wordids.py \
+python create_dictionary.py \
     --corpus $OUTPUT
