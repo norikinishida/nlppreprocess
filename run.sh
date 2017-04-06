@@ -1,11 +1,13 @@
 #!/usr/bin/env sh
 
-INPUT=/mnt/hdd/dataset/Book-Corpus/books_large.merge.head_50000.txt
-TMP=./tmp.txt
-OUTPUT=./books_large.merge.head_50000.txt.preprocessed
+RAW=/mnt/hdd/dataset/Book-Corpus/books_large.merge.head_50000.txt
+CORPUS_ALL=./books_large.merge.head_50000.txt.preprocessed
+CORPUS_TRAIN=./books_large.merge.head_50000.txt.preprocessed.train
+CORPUS_VAL=./books_large.merge.head_50000.txt.preprocessed.val
 
+TMP=./tmp.txt
 python lowercase.py \
-    --input $INPUT \
+    --input $RAW \
     --output $TMP.lowercase
 
 # echo "[nlppreprocess;StanfordCoreNLP] Processing ..."
@@ -34,9 +36,15 @@ python append_eos.py \
 
 python replace_rare_words.py \
     --input $TMP.append_eos \
-    --output $OUTPUT \
+    --output $CORPUS_ALL \
     --prune_at 300000 \
-    --min_count 0
+    --min_count 5
+
+python split_corpus.py \
+    --all $CORPUS_ALL \
+    --train $CORPUS_TRAIN \
+    --val $CORPUS_VAL \
+    --size 5000
 
 python create_dictionary.py \
-    --corpus $OUTPUT
+    --corpus $CORPUS_TRAIN
