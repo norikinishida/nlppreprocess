@@ -14,12 +14,12 @@ def main(path):
     iterator = utils.read_sentences(path)
 
     # construct a dictionary
-    print "[nlppreprocess.create_wordids] Processing ..."
+    print "[nlppreprocess.create_dictionary] Processing ..."
     dictionary = gensim.corpora.Dictionary(iterator, prune_at=None)
     vocab = dictionary.token2id
-    print "[nlppreprocess.create_wordids] Vocabulary size: %d" % len(vocab)
+    print "[nlppreprocess.create_dictionary] Vocabulary size: %d" % len(vocab)
     dictionary.save_as_text(path + ".dictionary")
-    print "[nlppreprocess.create_wordids] Saved the dictionary to %s" % (path + ".dictionary")
+    print "[nlppreprocess.create_dictionary] Saved the dictionary to %s" % (path + ".dictionary")
     
     # # transform to wordids
     # sents = [[vocab[w] for w in s] for s in sents]
