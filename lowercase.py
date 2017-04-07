@@ -15,7 +15,7 @@ class Lowercase(object):
 
 
 def main(path_in, path_out):
-    print "[nlppreprocess.lowercase] Processing ...",
+    print "[nlppreprocess.lowercase] Processing ..."
     iterator = utils.read_sentences(path_in)
     iterator = Lowercase(iterator)
     utils.write_sentences(iterator, path_out)
