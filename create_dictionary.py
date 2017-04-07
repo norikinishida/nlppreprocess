@@ -14,7 +14,7 @@ class CharIterator(object):
 
     def __iter__(self):
         for s in open(self.path):
-            yield list(s.decode("utf-8"))
+            yield list(s.decode("utf-8").replace("\n", "\\"))
 
 
 def main(path, char):
