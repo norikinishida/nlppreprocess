@@ -8,33 +8,44 @@ import gensim
 import utils
 
 
-def main(path):
+class CharIterator(object):
+    def __init__(self, path):
+        self.path = path
+
+    def __iter__(self):
+        for s in open(self.path):
+            yield list(s.decode("utf-8"))
+
+
+def main(path, char):
     assert os.path.exists(path)
+    
+    if not char:
+        iterator = utils.read_sentences(path)
+    else:
+        print "[nlppreprocess.create_dictionary] NOTE: char-level mode!"
+        iterator = CharIterator(path)
 
-    iterator = utils.read_sentences(path)
-
-    # construct a dictionary
     print "[nlppreprocess.create_dictionary] Processing ..."
     dictionary = gensim.corpora.Dictionary(iterator, prune_at=None)
     vocab = dictionary.token2id
     print "[nlppreprocess.create_dictionary] Vocabulary size: %d" % len(vocab)
-    dictionary.save_as_text(path + ".dictionary")
-    print "[nlppreprocess.create_dictionary] Saved the dictionary to %s" % (path + ".dictionary")
     
-    # # transform to wordids
-    # sents = [[vocab[w] for w in s] for s in sents]
-    #
-    # # write
-    # sents = [[str(w) for w in s] for s in sents]
-    # utils.write_sentences(sents, path_out=path + ".wordids")
-    # print "[nlppreprocess.create_wordids] Wrote to %s" % (path + ".wordids")
-
+    if not char:
+        dictionary.save_as_text(path + ".dictionary")
+        print "[nlppreprocess.create_dictionary] Saved the dictionary to %s" % (path + ".dictionary")
+    else:
+        dictionary.save_as_text(path + ".char.dictionary")
+        print "[nlppreprocess.create_dictionary] Saved the dictionary to %s" % (path + ".char.dictionary")
+   
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--corpus", type=str, required=True)
+    parser.add_argument("--char", type=int, default=0)
     args = parser.parse_args()
 
     path = args.corpus
+    char = bool(args.char)
 
-    main(path=path)
+    main(path=path, char=char)
