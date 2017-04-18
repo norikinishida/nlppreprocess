@@ -24,6 +24,9 @@ def main(path_corpus, path_dict, prune_at, min_count, char):
     dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
     print "[nlppreprocess.create_dictionary] Vocabulary size: %d (after filtering)" % len(dictionary.token2id)
     
+    dictionary.token2id["<UNK>"] = len(dictionary.token2id)
+    print "[nlppreprocess.create_dictionary] Vocabulary size: %d (with '<UNK>')" % len(dictionary.token2id)
+    
     dictionary.save_as_text(path_dict)
     print "[nlppreprocess.create_dictionary] Saved the dictionary to %s" % path_dict
    
