@@ -14,7 +14,7 @@ class ReplaceRareWords(object):
         if not char:
             self.UNK = "<UNK>"
         else:
-            self.UNK = "*"
+            self.UNK = "0"
 
     def __iter__(self):
         identical = dict(zip(self.vocab, self.vocab))
