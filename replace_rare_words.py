@@ -37,7 +37,6 @@ def count_UNK_rate(iterator):
 def main(path_in, path_out, path_dict, char):
     assert path_dict.endswith(".dictionary")
     if char:
-        assert path_dict.endswith(".char.dictionary")
         print "[nlppreprocess.replace_rare_words] NOTE: char-level mode!"
 
     print "[nlppreprocess.replace_rare_words] Processing ..."

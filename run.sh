@@ -3,6 +3,8 @@
 RAW=/mnt/hdd/dataset/Book-Corpus/books_large.merge.head_50000.txt
 CORPUS_TRAIN=./books_large.merge.head_50000.txt.preprocessed.train
 CORPUS_VAL=./books_large.merge.head_50000.txt.preprocessed.val
+CORPUS_TRAIN_CHAR=./books_large.merge.head_50000.txt.preprocessed.char.train
+CORPUS_VAL_CHAR=./books_large.merge.head_50000.txt.preprocessed.char.train
 
 TMP=./tmp.txt
 
@@ -57,16 +59,16 @@ python replace_rare_words.py \
 
 python create_dictionary.py \
     --corpus $TMP.train \
-    --dict $CORPUS_TRAIN.char.dictionary \
+    --dict $CORPUS_TRAIN_CHAR.dictionary \
     --char 1
 
 python replace_rare_words.py \
     --input $TMP.train \
-    --output $CORPUS_TRAIN.char \
-    --dict $CORPUS_TRAIN.char.dictionary \
+    --output $CORPUS_TRAIN_CHAR \
+    --dict $CORPUS_TRAIN_CHAR.dictionary \
     --char 1
 python replace_rare_words.py \
     --input $TMP.val \
-    --output $CORPUS_VAL.char \
-    --dict $CORPUS_TRAIN.char.dictionary \
+    --output $CORPUS_VAL_CHAR \
+    --dict $CORPUS_TRAIN_CHAR.dictionary \
     --char 1

@@ -14,7 +14,6 @@ def main(path_corpus, path_dict, prune_at, min_count, char):
     
     assert path_dict.endswith(".dictionary")
     if char:
-        assert path_dict.endswith(".char.dictionary")
         print "[nlppreprocess.create_dictionary] NOTE: char-level mode!"
     
     iterator = utils.read_sentences(path_corpus, char=char)
