@@ -8,14 +8,18 @@ import utils
 
 
 class ReplaceRareWords(object):
-    def __init__(self, iterator, dictionary):
+    def __init__(self, iterator, dictionary, char):
         self.iterator = iterator
         self.vocab = dictionary.token2id
+        if not char:
+            self.UNK = "<UNK>"
+        else:
+            self.UNK = "*"
 
     def __iter__(self):
         identical = dict(zip(self.vocab, self.vocab))
         for s in self.iterator:
-            yield [identical.get(w, "<UNK>") for w in s]
+            yield [identical.get(w, self.UNK) for w in s]
 
 
 def count_UNK_rate(iterator):
@@ -30,25 +34,35 @@ def count_UNK_rate(iterator):
             (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
 
 
-def main(path_in, path_out, path_dict):
+def main(path_in, path_out, path_dict, char):
+    assert path_dict.endswith(".dictionary")
+    if char:
+        assert path_dict.endswith(".char.dictionary")
+        print "[nlppreprocess.replace_rare_words] NOTE: char-level mode!"
+
     print "[nlppreprocess.replace_rare_words] Processing ..."
     dictionary = gensim.corpora.Dictionary.load_from_text(path_dict)
 
-    iterator = utils.read_sentences(path_in)
-    iterator = ReplaceRareWords(iterator, dictionary)
+    iterator = utils.read_sentences(path_in, char=char)
+
+    iterator = ReplaceRareWords(iterator, dictionary, char=char)
+
     count_UNK_rate(iterator)
-    utils.write_sentences(iterator, path_out)
+
+    utils.write_sentences(iterator, path_out, char=char)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", help="path to input corpus", type=str, required=True)
-    parser.add_argument("--output", help="path to output corpus", type=str, required=True)
-    parser.add_argument("--dict", help="path to dictionary", type=str, required=True)
+    parser.add_argument("--input", type=str, required=True)
+    parser.add_argument("--output", type=str, required=True)
+    parser.add_argument("--dict", type=str, required=True)
+    parser.add_argument("--char", type=int, default=0)
     args = parser.parse_args()
 
     path_in = args.input
     path_out = args.output
     path_dict = args.dict
+    char = bool(args.char)
 
-    main(path_in=path_in, path_out=path_out, path_dict=path_dict)
+    main(path_in=path_in, path_out=path_out, path_dict=path_dict, char=char)

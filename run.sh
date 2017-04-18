@@ -54,3 +54,19 @@ python replace_rare_words.py \
     --input $TMP.val \
     --output $CORPUS_VAL \
     --dict $CORPUS_TRAIN.dictionary
+
+python create_dictionary.py \
+    --corpus $TMP.train \
+    --dict $CORPUS_TRAIN.char.dictionary \
+    --char 1
+
+python replace_rare_words.py \
+    --input $TMP.train \
+    --output $CORPUS_TRAIN.char \
+    --dict $CORPUS_TRAIN.char.dictionary \
+    --char 1
+python replace_rare_words.py \
+    --input $TMP.val \
+    --output $CORPUS_VAL.char \
+    --dict $CORPUS_TRAIN.char.dictionary \
+    --char 1

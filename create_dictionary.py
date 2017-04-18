@@ -8,15 +8,6 @@ import gensim
 import utils
 
 
-class CharIterator(object):
-    def __init__(self, path):
-        self.path = path
-
-    def __iter__(self):
-        for s in open(self.path):
-            yield list(s.decode("utf-8").replace("\n", "\\"))
-
-
 def main(path_corpus, path_dict, prune_at, min_count, char):
     assert os.path.exists(path_corpus)
     assert not os.path.exists(path_dict)
@@ -24,12 +15,9 @@ def main(path_corpus, path_dict, prune_at, min_count, char):
     assert path_dict.endswith(".dictionary")
     if char:
         assert path_dict.endswith(".char.dictionary")
-    
-    if not char:
-        iterator = utils.read_sentences(path_corpus)
-    else:
         print "[nlppreprocess.create_dictionary] NOTE: char-level mode!"
-        iterator = CharIterator(path_corpus)
+    
+    iterator = utils.read_sentences(path_corpus, char=char)
 
     print "[nlppreprocess.create_dictionary] Processing ..."
     dictionary = gensim.corpora.Dictionary(iterator, prune_at=prune_at)
