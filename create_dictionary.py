@@ -8,15 +8,12 @@ import gensim
 import utils
 
 
-def main(path_corpus, path_dict, prune_at, min_count, char):
+def main(path_corpus, path_dict, prune_at, min_count):
     assert os.path.exists(path_corpus)
     assert not os.path.exists(path_dict)
     
     assert path_dict.endswith(".dictionary")
-    if char:
-        print "[nlppreprocess.create_dictionary] NOTE: char-level mode!"
-    
-    iterator = utils.read_sentences(path_corpus, char=char)
+    iterator = utils.read_sentences(path_corpus)
 
     print "[nlppreprocess.create_dictionary] Processing ..."
     dictionary = gensim.corpora.Dictionary(iterator, prune_at=prune_at)
@@ -37,17 +34,14 @@ if __name__ == "__main__":
     parser.add_argument("--dict", type=str, required=True)
     parser.add_argument("--prune_at", type=int, default=1000000)
     parser.add_argument("--min_count", type=int, default=0)
-    parser.add_argument("--char", type=int, default=0)
     args = parser.parse_args()
 
     path_corpus = args.corpus
     path_dict = args.dict
     prune_at = args.prune_at
     min_count = args.min_count
-    char = bool(args.char)
 
     main(path_corpus=path_corpus, 
         path_dict=path_dict,
         prune_at=prune_at,
-        min_count=min_count,
-        char=char)
+        min_count=min_count)

@@ -3,8 +3,6 @@
 RAW=/mnt/hdd/dataset/Book-Corpus/books_large.merge.head_50000.txt
 CORPUS_TRAIN=./books_large.merge.head_50000.txt.preprocessed.train
 CORPUS_VAL=./books_large.merge.head_50000.txt.preprocessed.val
-CORPUS_TRAIN_CHAR=./books_large.merge.head_50000.txt.preprocessed.char.train
-CORPUS_VAL_CHAR=./books_large.merge.head_50000.txt.preprocessed.char.train
 
 TMP=./tmp.txt
 
@@ -27,6 +25,11 @@ python lowercase.py \
 python tokenizer.py \
     --input $TMP.lowercase \
     --output $TMP.tokenize
+
+# python convert_textlines_to_characters.py \
+#     --input $TMP.tokenize \
+#     --output $TMP.tokenize.char
+# cp $TMP.tokenize.char $TMP.tokenize
 
 python replace_digits.py \
     --input $TMP.tokenize \
@@ -56,19 +59,3 @@ python replace_rare_words.py \
     --input $TMP.val \
     --output $CORPUS_VAL \
     --dict $CORPUS_TRAIN.dictionary
-
-python create_dictionary.py \
-    --corpus $TMP.train \
-    --dict $CORPUS_TRAIN_CHAR.dictionary \
-    --char 1
-
-python replace_rare_words.py \
-    --input $TMP.train \
-    --output $CORPUS_TRAIN_CHAR \
-    --dict $CORPUS_TRAIN_CHAR.dictionary \
-    --char 1
-python replace_rare_words.py \
-    --input $TMP.val \
-    --output $CORPUS_VAL_CHAR \
-    --dict $CORPUS_TRAIN_CHAR.dictionary \
-    --char 1
