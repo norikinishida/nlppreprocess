@@ -7,7 +7,7 @@ import numpy as np
 import utils
 
 
-def main(path_all, path_train, path_val, size):
+def run(path_all, path_train, path_val, size):
     print "[nlppreprocess.split_corpus] Processing ..."
     iterator = utils.read_sentences(path_all)
     
@@ -47,5 +47,4 @@ if __name__ == "__main__":
     path_val = args.val
     size = args.size
 
-
-    main(path_all=path_all, path_train=path_train, path_val=path_val, size=size)
+    run(path_all=path_all, path_train=path_train, path_val=path_val, size=size)

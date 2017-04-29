@@ -15,7 +15,7 @@ class ReplaceDigits(object):
             yield [re.sub(r"\d", "7", w) for w in s]
 
 
-def main(path_in, path_out):
+def run(path_in, path_out):
     print "[nlppreprocess.replace_digits] Processing ..."
     iterator = utils.read_sentences(path_in)
     iterator = ReplaceDigits(iterator)
@@ -31,4 +31,4 @@ if __name__ == "__main__":
     path_in = args.input
     path_out = args.output
 
-    main(path_in=path_in, path_out=path_out)
+    run(path_in=path_in, path_out=path_out)

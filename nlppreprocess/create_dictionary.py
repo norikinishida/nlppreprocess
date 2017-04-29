@@ -8,7 +8,7 @@ import gensim
 import utils
 
 
-def main(path_corpus, path_dict, prune_at, min_count):
+def run(path_corpus, path_dict, prune_at, min_count):
     assert os.path.exists(path_corpus)
     assert not os.path.exists(path_dict)
     
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     prune_at = args.prune_at
     min_count = args.min_count
 
-    main(path_corpus=path_corpus, 
+    run(path_corpus=path_corpus, 
         path_dict=path_dict,
         prune_at=prune_at,
         min_count=min_count)

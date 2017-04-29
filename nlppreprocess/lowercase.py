@@ -14,7 +14,7 @@ class Lowercase(object):
             yield [w.lower() for w in s]
 
 
-def main(path_in, path_out):
+def run(path_in, path_out):
     print "[nlppreprocess.lowercase] Processing ..."
     iterator = utils.read_sentences(path_in)
     iterator = Lowercase(iterator)
@@ -30,4 +30,4 @@ if __name__ == "__main__":
     path_in = args.input
     path_out = args.output
 
-    main(path_in=path_in, path_out=path_out)
+    run(path_in=path_in, path_out=path_out)

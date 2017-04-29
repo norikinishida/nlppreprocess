@@ -24,7 +24,7 @@ class ConvertTextlinesToChars(object):
             return c
 
 
-def main(path_in, path_out):
+def run(path_in, path_out):
     print "[nlppreprocess.convert_textlines_to_characters] Processing ..."
     iterator = ConvertTextlinesToChars(path_in)
     utils.write_sentences(iterator, path_out)
@@ -39,5 +39,5 @@ if __name__ == "__main__":
     path_in = args.input
     path_out = args.output
 
-    main(path_in=path_in, path_out=path_out)
+    run(path_in=path_in, path_out=path_out)
 

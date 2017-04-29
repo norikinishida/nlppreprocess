@@ -30,7 +30,7 @@ def count_UNK_rate(iterator):
             (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
 
 
-def main(path_in, path_out, path_dict):
+def run(path_in, path_out, path_dict):
     assert path_dict.endswith(".dictionary")
 
     print "[nlppreprocess.replace_rare_words] Processing ..."
@@ -56,4 +56,4 @@ if __name__ == "__main__":
     path_out = args.output
     path_dict = args.dict
 
-    main(path_in=path_in, path_out=path_out, path_dict=path_dict)
+    run(path_in=path_in, path_out=path_out, path_dict=path_dict)
