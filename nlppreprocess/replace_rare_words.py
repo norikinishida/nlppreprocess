@@ -17,7 +17,6 @@ class ReplaceRareWords(object):
         for s in self.iterator:
             yield [identical.get(w, "<UNK>") for w in s]
 
-
 def count_UNK_rate(iterator):
     n_unk = 0
     n_total = 0
@@ -29,19 +28,18 @@ def count_UNK_rate(iterator):
     print "[nlppreprocess.replace_rare_words] # of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
 
-
 def run(path_in, path_out, path_dict):
     assert path_dict.endswith(".dictionary")
 
-    print "[nlppreprocess.replace_rare_words] Processing ..."
+    print("[nlppreprocess.replace_rare_words] Processing ...")
+    print("[nlppreprocess.replace_rare_words] IN: %s" % path_in)
+    print("[nlppreprocess.replace_rare_words] DICTIONARY: %s" % path_dict)
+    print("[nlppreprocess.replace_rare_words] OUT: %s" % path_out)
+
     dictionary = gensim.corpora.Dictionary.load_from_text(path_dict)
-
     iterator = utils.read_sentences(path_in)
-
     iterator = ReplaceRareWords(iterator, dictionary)
-
     count_UNK_rate(iterator)
-
     utils.write_sentences(iterator, path_out)
 
 

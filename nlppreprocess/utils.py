@@ -9,16 +9,14 @@ class WordIterator(object):
         for s in open(self.path):
             yield s.decode("utf-8").strip().split()
 
-
 def read_sentences(path_in):
     # f = open(path_in)
     # sents = [s.decode("utf-8").strip().split() for s in f]
     # return sents
     return WordIterator(path_in)
 
-
 def write_sentences(iterator, path_out):
-    print "[nlppreprocess.utils] Writing ..."
+    print("[nlppreprocess.utils] Writing ...")
     with open(path_out, "w") as f:
         for s in iterator:
             line = " ".join(s)

@@ -6,7 +6,6 @@ import utils
 
 
 def conll2lines(path_in):
-    print "[nlppreprocess.conll2lines] Processing ..."
     sents = []
     s = []
     for line in open(path_in):
@@ -26,8 +25,10 @@ def conll2lines(path_in):
         sents.append(s)
     return sents
 
-
-def main(path_in, path_out):
+def run(path_in, path_out):
+    print("[nlppreprocess.conll2lines] Processing ...")
+    print("[nlppreprocess.conll2lines] IN: %s" % path_in)
+    print("[nlppreprocess.conll2lines] OUT: %s" % path_out)
     sents = conll2lines(path_in)
     utils.write_sentences(sents, path_out)
 
@@ -41,4 +42,4 @@ if __name__ == "__main__":
     path_in = args.input
     path_out = args.output
 
-    main(path_in=path_in, path_out=path_out)
+    run(path_in=path_in, path_out=path_out)

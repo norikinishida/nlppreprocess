@@ -11,22 +11,26 @@ import utils
 def run(path_corpus, path_dict, prune_at, min_count):
     assert os.path.exists(path_corpus)
     assert not os.path.exists(path_dict)
-    
     assert path_dict.endswith(".dictionary")
-    iterator = utils.read_sentences(path_corpus)
 
-    print "[nlppreprocess.create_dictionary] Processing ..."
+    print("[nlppreprocess.create_dictionary] Processing ...")
+    print("[nlppreprocess.create_dictionary] INPUT CORPUS: %s" % path_corpus)
+    print("[nlppreprocess.create_dictionary] OUTPUT DICTIONARY: %s" % path_dict)
+    print("[nlppreprocess.create_dictionary] PRUNE AT: %d" % prune_at)
+    print("[nlppreprocess.create_dictionary] MINIMUM COUNT: %d" % min_count)
+
+    iterator = utils.read_sentences(path_corpus)
     dictionary = gensim.corpora.Dictionary(iterator, prune_at=prune_at)
-    print "[nlppreprocess.create_dictionary] Vocabulary size: %d (before filtering)" % len(dictionary.token2id)
+    print("[nlppreprocess.create_dictionary] Vocabulary size: %d (before filtering)" % len(dictionary.token2id))
     dictionary.filter_extremes(no_below=min_count, no_above=1.0, keep_n=prune_at)
-    print "[nlppreprocess.create_dictionary] Vocabulary size: %d (after filtering)" % len(dictionary.token2id)
+    print("[nlppreprocess.create_dictionary] Vocabulary size: %d (after filtering)" % len(dictionary.token2id))
     
     dictionary.token2id["<UNK>"] = len(dictionary.token2id)
-    print "[nlppreprocess.create_dictionary] Vocabulary size: %d (with '<UNK>')" % len(dictionary.token2id)
+    print("[nlppreprocess.create_dictionary] Vocabulary size: %d (with '<UNK>')" % len(dictionary.token2id))
     
     dictionary.save_as_text(path_dict)
-    print "[nlppreprocess.create_dictionary] Saved the dictionary to %s" % path_dict
-   
+    print("[nlppreprocess.create_dictionary] Saved the dictionary to %s" % path_dict)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

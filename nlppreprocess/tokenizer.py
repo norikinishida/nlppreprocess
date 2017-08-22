@@ -22,9 +22,10 @@ class Tokenizer_with_nltk(object):
                 all_tokens.extend(tokens)
             yield all_tokens
 
-
 def run(path_in, path_out):
-    print "[nlppreprocess.tokenizer] Processing ..."
+    print("[nlppreprocess.tokenizer] Processing ...")
+    print("[nlppreprocess.tokenizer] IN: %s" % path_in)
+    print("[nlppreprocess.tokenizer] OUT: %s" % path_out)
     iterator = utils.read_sentences(path_in)
     iterator = Tokenizer_with_nltk(iterator)
     utils.write_sentences(iterator, path_out)
