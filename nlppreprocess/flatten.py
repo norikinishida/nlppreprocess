@@ -15,10 +15,10 @@ def run(path_in, path_out):
         for s in iterator:
             for w in s:
                 if is_begin:
-                    f.write("%s" % w)
+                    f.write("%s" % w.encode("utf-8"))
                     is_begin = False
                 else:
-                    f.write(" %s" % w)
+                    f.write(" %s" % w.encode("utf-8"))
 
 
 if __name__ == "__main__":
