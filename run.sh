@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
 
-RAW=/mnt/hdd/dataset/Book-Corpus/books_large.merge.head_50000.txt
-CORPUS_TRAIN=./books_large.merge.head_50000.txt.preprocessed.train
-CORPUS_VAL=./books_large.merge.head_50000.txt.preprocessed.val
-
 python template.py
 
 # echo "[nlppreprocess;StanfordCoreNLP] Processing ..."

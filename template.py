@@ -6,21 +6,21 @@ import nlppreprocess.convert_textlines_to_characters
 import nlppreprocess.replace_digits
 import nlppreprocess.append_eos
 import nlppreprocess.split_corpus
-import nlppreprocess.create_dictionary
+import nlppreprocess.create_vocabulary
 import nlppreprocess.replace_rare_words
 
 
-# RAW_CORPUS = "/path/to/raw_corpus"
-# TRAIN_CORPUS = "/path/to/training_corpus"
-# VAL_CORPUS = "/path/to/validation_corpus"
-RAW_CORPUS = "/mnt/hdd/dataset/Book-Corpus/books_large.merge.head_50000.txt"
-TRAIN_CORPUS = "./books_large.merge.head_50000.txt.preprocessed.train"
-VAL_CORPUS = "./books_large.merge.head_50000.txt.preprocessed.val"
+INPUT_CORPUS = "/path/to/raw_corpus"
+OUTPUT_CORPUS_TRAIN = "/path/to/training_corpus"
+OUTPUT_CORPUS_VAL = "/path/to/validation_corpus"
+# INPUT_CORPUS = "/mnt/hdd/dataset/Book-Corpus/books_large.merge.head_50000.txt"
+# OUTPUT_CORPUS_TRAIN = "./books_large.merge.head_50000.txt.preprocessed.train"
+# OUTPUT_CORPUS_VAL = "./books_large.merge.head_50000.txt.preprocessed.val"
 
 def main():
     tmp = "tmp.txt"
     nlppreprocess.lowercase.run(
-            RAW_CORPUS,
+            INPUT_CORPUS,
             tmp + ".lowercase")
     nlppreprocess.tokenizer.run(
             tmp + ".lowercase",
@@ -39,19 +39,20 @@ def main():
             tmp + ".lowercase.tokenize.replace_digits.append_eos.train",
             tmp + ".lowercase.tokenize.replace_digits.append_eos.val",
             size=5000)
-    nlppreprocess.create_dictionary.run(
+    nlppreprocess.create_vocabulary.run(
             tmp + ".lowercase.tokenize.replace_digits.append_eos.train",
-            TRAIN_CORPUS + ".dictionary",
+            OUTPUT_CORPUS_TRAIN + ".vocab",
             prune_at=300000,
-            min_count=5)
+            min_count=5,
+            special_words=["<EOS>"])
     nlppreprocess.replace_rare_words.run(
             tmp + ".lowercase.tokenize.replace_digits.append_eos.train",
-            TRAIN_CORPUS,
-            path_dict=TRAIN_CORPUS + ".dictionary")
+            OUTPUT_CORPUS_TRAIN,
+            path_vocab=OUTPUT_CORPUS_TRAIN + ".vocab")
     nlppreprocess.replace_rare_words.run(
             tmp + ".lowercase.tokenize.replace_digits.append_eos.val",
-            VAL_CORPUS,
-            path_dict=TRAIN_CORPUS + ".dictionary")
+            OUTPUT_CORPUS_VAL,
+            path_vocab=OUTPUT_CORPUS_TRAIN + ".vocab")
 
 
 if __name__ == "__main__":

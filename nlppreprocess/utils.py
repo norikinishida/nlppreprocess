@@ -16,8 +16,8 @@ def read_sentences(path_in):
     return WordIterator(path_in)
 
 def write_sentences(iterator, path_out):
-    print("[nlppreprocess.utils] Writing ...")
     with open(path_out, "w") as f:
         for s in iterator:
             line = " ".join(s)
             f.write("%s\n" % line.encode("utf-8"))
+

@@ -19,6 +19,7 @@ def run(path_in, path_out):
     print("[nlppreprocess.append_eos] OUT: %s" % path_out)
     iterator = utils.read_sentences(path_in)
     iterator = AppendEOS(iterator)
+    print("[nlppreprocess.append_eos] Writing ...")
     utils.write_sentences(iterator, path_out)
 
 

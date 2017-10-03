@@ -25,7 +25,6 @@ def run(path_all, path_train, path_val, size):
     val_index = perm[-size:]
     
     print("[nlppreprocess.split_corpus] Writing ...")
-
     f_train = open(path_train, "w")
     f_val = open(path_val, "w")
     for i, s in enumerate(iterator):

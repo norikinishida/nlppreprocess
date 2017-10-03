@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-
-import gensim
+import cPickle as pkl
 
 import utils
 
 
 class ReplaceRareWords(object):
-    def __init__(self, iterator, dictionary):
+    def __init__(self, iterator, vocab):
         self.iterator = iterator
-        self.vocab = dictionary.token2id
+        self.vocab = vocab
 
     def __iter__(self):
         identical = dict(zip(self.vocab, self.vocab))
@@ -28,18 +27,18 @@ def count_UNK_rate(iterator):
     print "[nlppreprocess.replace_rare_words] # of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
 
-def run(path_in, path_out, path_dict):
-    assert path_dict.endswith(".dictionary")
+def run(path_in, path_out, path_vocab):
+    assert path_vocab.endswith(".vocab")
 
     print("[nlppreprocess.replace_rare_words] Processing ...")
     print("[nlppreprocess.replace_rare_words] IN: %s" % path_in)
-    print("[nlppreprocess.replace_rare_words] DICTIONARY: %s" % path_dict)
+    print("[nlppreprocess.replace_rare_words] VOCABULARY: %s" % path_vocab)
     print("[nlppreprocess.replace_rare_words] OUT: %s" % path_out)
-
-    dictionary = gensim.corpora.Dictionary.load_from_text(path_dict)
+    vocab = pkl.load(open(path_vocab, "rb"))
     iterator = utils.read_sentences(path_in)
-    iterator = ReplaceRareWords(iterator, dictionary)
+    iterator = ReplaceRareWords(iterator, vocab)
     count_UNK_rate(iterator)
+    print("[nlppreprocess.replace_rare_words] Writing ...")
     utils.write_sentences(iterator, path_out)
 
 
@@ -47,11 +46,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=str, required=True)
     parser.add_argument("--output", type=str, required=True)
-    parser.add_argument("--dict", type=str, required=True)
+    parser.add_argument("--vocab", type=str, required=True)
     args = parser.parse_args()
 
     path_in = args.input
     path_out = args.output
-    path_dict = args.dict
+    path_vocab = args.vocab
 
-    run(path_in=path_in, path_out=path_out, path_dict=path_dict)
+    run(path_in=path_in, path_out=path_out, path_vocab=path_vocab)

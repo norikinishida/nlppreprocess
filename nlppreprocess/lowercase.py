@@ -19,6 +19,7 @@ def run(path_in, path_out):
     print("[nlppreprocess.lowercase] OUT: %s" % path_out)
     iterator = utils.read_sentences(path_in)
     iterator = Lowercase(iterator)
+    print("[nlppreprocess.lowercase] Writing ...")
     utils.write_sentences(iterator, path_out)
 
 
