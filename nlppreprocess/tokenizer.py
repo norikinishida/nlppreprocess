@@ -28,7 +28,6 @@ def run(path_in, path_out):
     print("[nlppreprocess.tokenizer] OUT: %s" % path_out)
     iterator = utils.read_sentences(path_in)
     iterator = Tokenizer_with_nltk(iterator)
-    print("[nlppreprocess.tokenizer] Writing ...")
     utils.write_sentences(iterator, path_out)
 
 

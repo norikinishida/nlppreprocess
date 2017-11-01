@@ -20,7 +20,6 @@ def run(path_in, path_out):
     print("[nlppreprocess.replace_digits] OUT: %s" % path_out)
     iterator = utils.read_sentences(path_in)
     iterator = ReplaceDigits(iterator)
-    print("[nlppreprocess.replace_digits] Writing ...")
     utils.write_sentences(iterator, path_out)
 
 

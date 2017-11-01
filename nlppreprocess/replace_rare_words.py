@@ -38,7 +38,6 @@ def run(path_in, path_out, path_vocab):
     iterator = utils.read_sentences(path_in)
     iterator = ReplaceRareWords(iterator, vocab)
     count_UNK_rate(iterator)
-    print("[nlppreprocess.replace_rare_words] Writing ...")
     utils.write_sentences(iterator, path_out)
 
 
