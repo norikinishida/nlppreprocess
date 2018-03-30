@@ -31,6 +31,7 @@ def run(path_corpus, path_vocab, prune_at, min_count, special_words):
     for sw in special_words:
         if not sw in vocab_words:
             vocab_words = vocab_words + [sw]
+            frequencies[sw] = 0 # TODO
     vocab = OrderedDict()
     for w_id, w in enumerate(vocab_words):
         vocab[w] = w_id
