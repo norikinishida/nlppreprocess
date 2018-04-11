@@ -24,16 +24,13 @@ def count_UNK_rate(iterator):
             if w == "<UNK>":
                 n_unk += 1
         n_total += len(s)
-    print "[nlppreprocess.replace_rare_words] # of '<UNK>' tokens: %d (%d/%d = %.2f%%)" % \
+    print "[nlppreprocess.replace_rare_words] # of '<UNK>' tokens=%d (%d/%d=%.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
 
 def run(path_in, path_out, path_vocab):
     assert path_vocab.endswith(".vocab")
 
     print("[nlppreprocess.replace_rare_words] Processing ...")
-    print("[nlppreprocess.replace_rare_words] IN: %s" % path_in)
-    print("[nlppreprocess.replace_rare_words] VOCABULARY: %s" % path_vocab)
-    print("[nlppreprocess.replace_rare_words] OUT: %s" % path_out)
     vocab = pkl.load(open(path_vocab, "rb"))
     iterator = utils.read_sentences(path_in)
     iterator = ReplaceRareWords(iterator, vocab)

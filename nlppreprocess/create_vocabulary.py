@@ -14,11 +14,9 @@ def run(path_corpus, path_vocab, prune_at, min_count, special_words):
     assert path_vocab.endswith(".vocab")
 
     print("[nlppreprocess.create_vocabulary] Processing ...")
-    print("[nlppreprocess.create_vocabulary] INPUT CORPUS: %s" % path_corpus)
-    print("[nlppreprocess.create_vocabulary] OUTPUT VOCABULARY: %s" % path_vocab)
-    print("[nlppreprocess.create_vocabulary] PRUNE AT: %d" % prune_at)
-    print("[nlppreprocess.create_vocabulary] MINIMUM COUNT: %d" % min_count)
-    print("[nlppreprocess.create_vocabulary] SPECIAL WORDS: %s" % special_words)
+    print("[nlppreprocess.create_vocabulary] PRUNE AT=%d" % prune_at)
+    print("[nlppreprocess.create_vocabulary] MINIMUM COUNT=%d" % min_count)
+    print("[nlppreprocess.create_vocabulary] SPECIAL WORDS=%s" % special_words)
 
     iterator = utils.read_sentences(path_corpus)
     counter = Counter()
@@ -38,7 +36,7 @@ def run(path_corpus, path_vocab, prune_at, min_count, special_words):
     if not "<UNK>" in vocab.keys():
         vocab["<UNK>"] = len(vocab)
         frequencies["<UNK>"] = 0 # TODO
-    print("[nlppreprocess.create_vocabulary] Vocabulary size (w/ '<UNK>'): %d" % len(vocab))
+    print("[nlppreprocess.create_vocabulary] Vocabulary size (w/ '<UNK>')=%d" % len(vocab))
     
     pkl.dump(vocab, open(path_vocab, "wb"))
     print("[nlppreprocess.create_vocabulary] Saved the vocabulary (pickle) to %s" % path_vocab)

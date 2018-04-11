@@ -6,8 +6,6 @@ import utils
 
 def run(path_in, path_out):
     print("[nlppreprocess.flatten] Processing ...")
-    print("[nlppreprocess.flatten] IN: %s" % path_in)
-    print("[nlppreprocess.flatten] OUT : %s" % path_out)
     iterator = utils.read_sentences(path_in)
     with open(path_out, "w") as f:
         is_begin = True

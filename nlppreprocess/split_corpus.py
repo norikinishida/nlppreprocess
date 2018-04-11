@@ -9,18 +9,13 @@ import utils
 
 def run(path_all, path_train, path_val, size):
     print("[nlppreprocess.split_corpus] Processing ...")
-    print("[nlppreprocess.split_corpus] IN: %s" % path_all)
-    print("[nlppreprocess.split_corpus] OUT (TRAINING): %s" % path_train)
-    print("[nlppreprocess.split_corpus] OUT (VALIDATION): %s" % path_val)
-    print("[nlppreprocess.split_corpus] VALIDATION SIZE: %d" % size)
-
     iterator = utils.read_sentences(path_all)
     
     count = 0
     for s in open(path_all):
         count += 1
     N = count
-    print("[nlppreprocess.split_corpus] Total size: %d" % N)
+    print("[nlppreprocess.split_corpus] Total size=%d" % N)
     perm = np.random.RandomState(1234).permutation(N)
     val_index = perm[-size:]
     

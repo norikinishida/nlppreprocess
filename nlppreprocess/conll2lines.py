@@ -27,8 +27,6 @@ def conll2lines(path_in):
 
 def run(path_in, path_out):
     print("[nlppreprocess.conll2lines] Processing ...")
-    print("[nlppreprocess.conll2lines] IN: %s" % path_in)
-    print("[nlppreprocess.conll2lines] OUT: %s" % path_out)
     sents = conll2lines(path_in)
     utils.write_sentences(sents, path_out)
 
