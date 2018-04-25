@@ -22,6 +22,8 @@ export PYTHONPATH=/path/to/hoge/nlppreprocess:$PYTHONPATH
 
 ## 3. How to use ##
 
+Please check ```./run.sh``` to see examples.
+
 Here, we assume that we have 10,000 English raw documents (i.e., raw_0000.txt〜raw_9999.txt) each of which consists of multiple sentences.
 
 ### Tokenization ###
