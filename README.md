@@ -45,7 +45,7 @@ $ ./corenlp.sh
 These commands will generate CoNLL-format files ```/path/to/outdir/raw_{0000〜9999}.txt.conll```.
 
 ```python
-import nlppreprocess.
+import nlppreprocess.conll2lines
 nlppreprocess.conll2lines.run(
     "/path/to/outdir/raw_0000.txt.conll",
     "/path/to/outdir/raw_0000.txt.tokenized")
