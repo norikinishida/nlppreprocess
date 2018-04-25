@@ -8,7 +8,7 @@ import utils
 
 
 def run(path_all, path_train, path_val, size):
-    print("[nlppreprocess.split_corpus] Processing ...")
+    # print("[nlppreprocess.split_corpus] Processing ...")
     iterator = utils.read_sentences(path_all)
     
     count = 0

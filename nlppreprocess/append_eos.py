@@ -14,7 +14,7 @@ class AppendEOS(object):
             yield s + ["<EOS>"]
 
 def run(path_in, path_out):
-    print("[nlppreprocess.append_eos] Processing ...")
+    # print("[nlppreprocess.append_eos] Processing ...")
     iterator = utils.read_sentences(path_in)
     iterator = AppendEOS(iterator)
     utils.write_sentences(iterator, path_out)
