@@ -28,7 +28,7 @@ def count_UNK_rate(iterator):
     #         (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
 
 def run(path_in, path_out, path_vocab):
-    assert path_vocab.endswith(".vocab")
+    assert path_vocab.endswith("vocab")
 
     # print("[nlppreprocess.replace_rare_words] Processing ...")
     vocab = pkl.load(open(path_vocab, "rb"))

@@ -11,7 +11,7 @@ import utils
 def run(path_corpus, path_vocab, prune_at, min_count, special_words):
     assert os.path.exists(path_corpus)
     assert not os.path.exists(path_vocab)
-    assert path_vocab.endswith(".vocab")
+    assert path_vocab.endswith("vocab")
 
     print("[nlppreprocess.create_vocabulary] Processing ...")
     print("[nlppreprocess.create_vocabulary] PRUNE AT=%d" % prune_at)
