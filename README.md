@@ -45,8 +45,8 @@ nlppreprocess.lowercase.run(
 ### Replacing digit to '7' ###
 
 e.g., 
-    - before: "$ 150 million of 8.55 % senior notes due oct. 15 , 2009 ,"
-    - after:  "$ 777 million of 7.77 % senior notes due oct. 77 , 7777 ,"
+- before: "$ 150 million of 8.55 % senior notes due oct. 15 , 2009 ,"
+- after:  "$ 777 million of 7.77 % senior notes due oct. 77 , 7777 ,"
 
 ```python
 import nlppreprocess.replace_digits
@@ -99,8 +99,12 @@ nlppreprocess.replace_rare_words.run(
 ```
 
 ### Other functions ###
-    - nlppreprocess.append_eos: appends "\<EOS\>" at the end of each line
-    - nlppreprocess.conll2lines: converts CoNLL-format files to sentence-by-sentence files
-    - nlppreprocess.split_corpus: randomly splits a single corpus (i.e., a list of sentences) into train/dev files
-    - nlppreprocess.convert_textlines_to_characters: convert a corpus to character sequences (e.g., "H e l l o <SPACE> w o r l d <EOL>")
+    - nlppreprocess.conll2lines
+        - converts CoNLL-format files to sentence-by-sentence files
+    - nlppreprocess.append_eos:
+        - appends "<EOS>" at the end of each line
+    - nlppreprocess.split_corpus
+        - randomly splits a single corpus (i.e., a list of sentences) into train/dev files
+    - nlppreprocess.convert_textlines_to_characters
+        - convert a corpus to character sequences (e.g., "H e l l o <SPACE> w o r l d <EOL>")
 
