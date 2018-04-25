@@ -22,6 +22,8 @@ export PYTHONPATH=/path/to/hoge/nlppreprocess:$PYTHONPATH
 
 ## 3. How to use ##
 
+Here, we assume that we have 10,000 English raw documents (i.e., raw_0000.txt〜raw_9999.txt) each of which consists of multiple sentences.
+
 ### Tokenization ###
 
 ```python
@@ -31,7 +33,21 @@ nlppreprocess.tokenizer.run(
     "/path/to/outdir/raw_0000.txt.tokenized")
 ```
 
-However, I recommend using the Stanford CoreNLP or PTBTokenizer to tokenize text.
+For tokenization, I recommend using the Stanford CoreNLP or PTBTokenizer.
+
+```
+$ python make_filelist.py
+$ ./corenlp.sh
+```
+
+These commands will generate CoNLL-format files ```/path/to/outdir/raw_{0000〜9999}.txt.conll```.
+
+```python
+import nlppreprocess.
+nlppreprocess.conll2lines.run(
+    "/path/to/outdir/raw_0000.txt.conll",
+    "/path/to/outdir/raw_0000.txt.tokenized")
+```
 
 ### Lowercasing ###
 
@@ -99,12 +115,10 @@ nlppreprocess.replace_rare_words.run(
 ```
 
 ### Other functions ###
-    - nlppreprocess.conll2lines
-        - converts CoNLL-format files to sentence-by-sentence files
     - nlppreprocess.append_eos:
         - appends "<EOS>" at the end of each line
     - nlppreprocess.split_corpus
-        - randomly splits a single corpus (i.e., a list of sentences) into train/dev files
+        - randomly splits a single corpus (i.e., a list of sentences) into train/test files
     - nlppreprocess.convert_textlines_to_characters
         - convert a corpus to character sequences (e.g., "H e l l o <SPACE> w o r l d <EOL>")
 

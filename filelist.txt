@@ -1,0 +1,4 @@
+./data/raw/raw_0000.txt
+./data/raw/raw_0001.txt
+./data/raw/raw_0002.txt
+./data/raw/raw_0003.txt
