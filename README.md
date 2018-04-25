@@ -35,7 +35,7 @@ nlppreprocess.tokenizer.run(
     "/path/to/outdir/raw_0000.txt.tokenized")
 ```
 
-For tokenization, I recommend using the Stanford CoreNLP or PTBTokenizer.
+However, for tokenization, I recommend using the Stanford CoreNLP or PTBTokenizer in stead of NLTK.
 
 ```
 $ python make_filelist.py
