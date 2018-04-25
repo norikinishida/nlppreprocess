@@ -42,7 +42,6 @@ def main(args):
             os.path.join(path_outdir, filename + ".tokenized.lowercased.replace_digits"))
     
     filepaths_train = aggregate_training_paths(filenames, path_outdir)
-    print filepaths_train
     nlppreprocess.concat.run(
         filepaths_train,
         os.path.join(path_outdir, "concat.tokenized.lowercased.replace_digits"))
