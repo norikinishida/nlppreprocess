@@ -2,19 +2,18 @@
 
 import argparse
 import cPickle as pkl
+import sys
 
 import utils
 
-
 class ReplaceRareWords(object):
-    def __init__(self, iterator, vocab):
+    def __init__(self, iterator, identical):
         self.iterator = iterator
-        self.vocab = vocab
+        self.identical = identical
 
     def __iter__(self):
-        identical = dict(zip(self.vocab, self.vocab))
         for s in self.iterator:
-            yield [identical.get(w, "<UNK>") for w in s]
+            yield [self.identical.get(w, "<UNK>") for w in s]
 
 def count_UNK_rate(iterator):
     n_unk = 0
@@ -24,19 +23,30 @@ def count_UNK_rate(iterator):
             if w == "<UNK>":
                 n_unk += 1
         n_total += len(s)
-    # print "[nlppreprocess.replace_rare_words] # of '<UNK>' tokens=%d (%d/%d=%.2f%%)" % \
-    #         (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
+    print "[nlppreprocess.replace_rare_words] # of '<UNK>' tokens=%d (%d/%d=%.2f%%)" % \
+            (n_unk, n_unk, n_total, float(n_unk)/n_total * 100)
 
 def run(path_in, path_out, path_vocab):
     assert path_vocab.endswith("vocab")
 
     # print("[nlppreprocess.replace_rare_words] Processing ...")
     vocab = pkl.load(open(path_vocab, "rb"))
-    iterator = utils.read_sentences(path_in)
-    iterator = ReplaceRareWords(iterator, vocab)
-    count_UNK_rate(iterator)
-    utils.write_sentences(iterator, path_out)
-
+    identical = dict(zip(vocab, vocab))
+    if isinstance(path_in, str) and isinstance(path_out, str):
+        path_in_list = [path_in]
+        path_out_list = [path_out]
+    elif isinstance(path_in, list) and isinstance(path_out, list):
+        path_in_list = path_in
+        path_out_list = path_out
+    else:
+        print("[nlppreprocess.replace_rare_words] Error: arguments path_in and path_out must be type of str or list.")
+        sys.exit(-1) 
+    assert len(path_in_list) == len(path_out_list)
+    for path_in, path_out in zip(path_in_list, path_out_list):
+        iterator = utils.read_sentences(path_in)
+        iterator = ReplaceRareWords(iterator, identical)
+        # count_UNK_rate(iterator)
+        utils.write_sentences(iterator, path_out)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
