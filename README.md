@@ -62,7 +62,7 @@ nlppreprocess.replace_digits.run(
 import nlppreprocess.concat
 
 # Get a list of paths to training documents
-filepaths = aggregate\_training\_paths() # => ["/path/to/outdir/raw_0000.txt.tokenized.lowercased.replace_digits", .., "/path/to/outdir/raw_7999.txt.tokenized.lowercased.replace_digits"]
+filepaths = aggregate_training_paths() # => ["/path/to/outdir/raw_0000.txt.tokenized.lowercased.replace_digits", .., "/path/to/outdir/raw_7999.txt.tokenized.lowercased.replace_digits"]
 
 # Concatenate them into a single file
 nlppreprocess.concat.run(
