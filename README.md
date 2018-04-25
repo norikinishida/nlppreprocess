@@ -1,8 +1,8 @@
-# A Tool for Preprocessing Natural Language Text#
+# A Tool for Preprocessing Natural Language Text #
 
 ## 1. Required Package ##
 
-nltk
+- nltk
 
 NLTK is required for tokenization. 
 However, I recommend using the Stanford CoreNLP or PTBTokenizer to tokenize text.
@@ -29,7 +29,7 @@ export PYTHONPATH=/path/to/hoge/nlppreprocess:$PYTHONPATH
 import nlppreprocess.tokenizer
 nlppreprocess.tokenizer.run(
     "/path/to/raw/raw_0000.txt",
-    "/path/to/out/raw_0000.txt.tokenized")
+    "/path/to/outdir/raw_0000.txt.tokenized")
 ```
 
 ### Lowercasing ###
@@ -37,19 +37,21 @@ nlppreprocess.tokenizer.run(
 ```python
 import nlppreprocess.lowercase
 nlppreprocess.lowercase.run(
-    "/path/to/out/raw_0000.txt.tokenized",
-    "/path/to/out/raw_0000.txt.tokenized.lowercased")
+    "/path/to/outdir/raw_0000.txt.tokenized",
+    "/path/to/outdir/raw_0000.txt.tokenized.lowercased")
 ```
 
 ### Replacing Digit to '7' ###
 
-e.g., "$ 150 million of 8.55 % senior notes due oct. 15 , 2009 ," -> "$ 777 million of 7.77 % senior notes due oct. 77 , 7777 ,"
+e.g., 
+    - before: "$ 150 million of 8.55 % senior notes due oct. 15 , 2009 ,"
+    - after:  "$ 777 million of 7.77 % senior notes due oct. 77 , 7777 ,"
 
 ```python
 import nlppreprocess.replace_digits
 nlppreprocess.replace_digits.run(
-    "/path/to/out/raw_0000.txt.tokenized.lowercased",
-    "/path/to/out/raw_0000.txt.tokenized.lowercased.replace_digits")
+    "/path/to/outdir/raw_0000.txt.tokenized.lowercased",
+    "/path/to/outdir/raw_0000.txt.tokenized.lowercased.replace_digits")
 ```
 
 ### Building a vocabulary ###
