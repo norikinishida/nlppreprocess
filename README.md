@@ -5,7 +5,6 @@
 - nltk
 
 NLTK is required for tokenization. 
-However, I recommend using the Stanford CoreNLP or PTBTokenizer to tokenize text.
 
 ## 2. Setting ##
 
@@ -32,6 +31,8 @@ nlppreprocess.tokenizer.run(
     "/path/to/outdir/raw_0000.txt.tokenized")
 ```
 
+However, I recommend using the Stanford CoreNLP or PTBTokenizer to tokenize text.
+
 ### Lowercasing ###
 
 ```python
@@ -41,7 +42,7 @@ nlppreprocess.lowercase.run(
     "/path/to/outdir/raw_0000.txt.tokenized.lowercased")
 ```
 
-### Replacing Digit to '7' ###
+### Replacing digit to '7' ###
 
 e.g., 
     - before: "$ 150 million of 8.55 % senior notes due oct. 15 , 2009 ,"
@@ -86,7 +87,7 @@ If you set special_words as ["A", "B", "C"], the built vocabulary contains these
 
 ### Replacing rare word types ###
 
-Replace tokens that are not contained in the built vocabulary with "<UNK>"
+Replace tokens that are not contained in the built vocabulary with "\<UNK\>"
 
 ```python
 import nlppreprocess.replace_rare_words
@@ -96,4 +97,10 @@ path_vocab = "/path/to/outdir/vocab"
 nlppreprocess.replace_rare_words.run(
     path_in, path_out, path_vocab)
 ```
+
+### Other functions ###
+    - nlppreprocess.append_eos: appends "\<EOS\>" at the end of each line
+    - nlppreprocess.conll2lines: converts CoNLL-format files to sentence-by-sentence files
+    - nlppreprocess.split_corpus: randomly splits a single corpus (i.e., a list of sentences) into train/dev files
+    - nlppreprocess.convert_textlines_to_characters: convert a corpus to character sequences (e.g., "H e l l o <SPACE> w o r l d <EOL>")
 
