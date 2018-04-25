@@ -2,7 +2,7 @@
 
 ## 1. Required Package ##
 
-- nltk
+- nltk (optional)
 
 NLTK is required for tokenization. 
 
