@@ -6,29 +6,29 @@ import utils
 
 
 def conll2lines(path_in):
-    sents = []
-    s = []
+    sentences = []
+    buf = []
     for line in open(path_in):
-        line = line.decode("utf-8").strip().split()
-        if len(line) == 0:
+        items = line.decode("utf-8").strip().split()
+        if len(items) == 0:
             continue
-        index = int(line[0])
-        w = line[1]
+        index = int(items[0])
+        token = items[1]
         if index == 1:
-            if len(s) != 0:
-                sents.append(s)
-                s = []
+            if len(buf) != 0:
+                sentences.append(buf)
+                buf = []
             else:
                 pass
-        s.append(w)
-    if len(s) != 0:
-        sents.append(s)
-    return sents
+        buf.append(token)
+    if len(buf) != 0:
+        sentences.append(buf)
+    return sentences 
 
 def run(path_in, path_out):
     # print("[nlppreprocess.conll2lines] Processing ...")
-    sents = conll2lines(path_in)
-    utils.write_sentences(sents, path_out)
+    sentences = conll2lines(path_in)
+    utils.write_sentences(sentences, path_out)
 
 
 if __name__ == "__main__":
