@@ -62,7 +62,7 @@ nlppreprocess.lowercase.run(
 
 ### Replacing digit to '7' ###
 
-e.g., 
+e.g.,
 - before: "$ 150 million of 8.55 % senior notes due oct. 15 , 2009 ,"
 - after:  "$ 777 million of 7.77 % senior notes due oct. 77 , 7777 ,"
 
