@@ -1,7 +1,11 @@
 #!/usr/bin/env sh
 
+
+# In this example, we use the Gutenberg Dataset that can be downloaded from ```https://web.eecs.umich.edu/~lahiri/gutenberg_dataset.html```
 INDIR=/mnt/hdd/dataset/GutenbergDataset/Gutenberg/txt
-OUTDIR=/mnt/hdd/projects/nlppreprocess/gutenberg
+
+# OUTDIR=/mnt/hdd/projects/nlppreprocess/gutenberg
+OUTDIR=./data
 
 python nlppreprocess/make_filelist.py \
     --input_dir ${INDIR} \
