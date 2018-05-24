@@ -33,8 +33,11 @@ def run(path_in, path_out, path_vocab=None, vocab=None):
         vocab = pkl.load(open(path_vocab, "rb"))
         vocab = set(vocab)
     else:
-        vocab = set(vocab)
+        assert isinstance(vocab, set)
     if isinstance(path_in, str) and isinstance(path_out, str):
+        path_in_list = [path_in]
+        path_out_list = [path_out]
+    elif isinstance(path_in, unicode) and isinstance(path_out, unicode):
         path_in_list = [path_in]
         path_out_list = [path_out]
     elif isinstance(path_in, list) and isinstance(path_out, list):

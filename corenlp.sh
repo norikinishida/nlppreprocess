@@ -3,5 +3,5 @@
 java edu.stanford.nlp.pipeline.StanfordCoreNLP \
     -annotators tokenize,ssplit \
     -outputFormat conll \
-    -filelist ./filelist.txt \
-    -outputDirectory $1
+    -filelist $1 \
+    -outputDirectory $2

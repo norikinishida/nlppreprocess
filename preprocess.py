@@ -29,7 +29,7 @@ def main(args):
 
     filenames = os.listdir(path_indir)
     filenames = [n for n in filenames if n.startswith("raw_") and n.endswith(".txt")]
-    
+
     for filename in filenames:
         nlppreprocess.conll2lines.run(
             os.path.join(path_outdir, filename + ".conll"),
@@ -40,7 +40,7 @@ def main(args):
         nlppreprocess.replace_digits.run(
             os.path.join(path_outdir, filename + ".tokenized.lowercased"),
             os.path.join(path_outdir, filename + ".tokenized.lowercased.replace_digits"))
-    
+
     filepaths_train = aggregate_training_paths(filenames, path_outdir)
     nlppreprocess.concat.run(
         filepaths_train,
@@ -52,7 +52,7 @@ def main(args):
         prune_at=1000000,
         min_count=2,
         special_words=[])
-    
+
     filepaths_in = [os.path.join(path_outdir, n + ".tokenized.lowercased.replace_digits") for n in filenames]
     filepaths_out = [os.path.join(path_outdir, n + ".preprocessed") for n in filenames]
     nlppreprocess.replace_rare_words.run(
