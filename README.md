@@ -38,8 +38,8 @@ nlppreprocess.tokenizer.run(
 However, for tokenization, I recommend using the Stanford CoreNLP or PTBTokenizer in stead of NLTK.
 
 ```
-$ python make_filelist.py
-$ ./corenlp.sh
+$ python nlppreprocess/make_filelist.py --input_dir /path/to/raw --output_dir /path/to/outdir --filelist_name filelist.txt --begin raw --end txt
+$ ./corenlp.sh /path/to/outdir/filelist.txt /path/to/outdir
 ```
 
 These commands will generate CoNLL-format files ```/path/to/outdir/raw_{0000〜9999}.txt.conll```.
