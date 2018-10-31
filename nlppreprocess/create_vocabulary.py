@@ -8,7 +8,7 @@ import os
 import utils
 
 
-def run(path_corpus, path_vocab, prune_at, min_count, special_words):
+def run(path_corpus, path_vocab, prune_at, min_count, special_words, with_unk=True):
     assert os.path.exists(path_corpus)
     assert not os.path.exists(path_vocab)
     assert path_vocab.endswith("vocab")
@@ -33,11 +33,14 @@ def run(path_corpus, path_vocab, prune_at, min_count, special_words):
     vocab = OrderedDict()
     for w_id, w in enumerate(vocab_words):
         vocab[w] = w_id
-    if not "<UNK>" in vocab.keys():
-        vocab["<UNK>"] = len(vocab)
-        frequencies["<UNK>"] = 0 # TODO
-    print("[nlppreprocess.create_vocabulary] Vocabulary size (w/ '<UNK>')=%d" % len(vocab))
-    
+    if with_unk:
+        if not "<UNK>" in vocab.keys():
+            vocab["<UNK>"] = len(vocab)
+            frequencies["<UNK>"] = 0 # TODO
+        print("[nlppreprocess.create_vocabulary] Vocabulary size (w/ '<UNK>')=%d" % len(vocab))
+    else:
+        print("[nlppreprocess.create_vocabulary] Vocabulary size (w/o '<UNK>')=%d" % len(vocab))
+
     pkl.dump(vocab, open(path_vocab, "wb"))
     print("[nlppreprocess.create_vocabulary] Saved the vocabulary (pickle) to %s" % path_vocab)
     with open(path_vocab + ".txt", "w") as f:

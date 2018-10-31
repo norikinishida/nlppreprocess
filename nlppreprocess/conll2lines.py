@@ -23,7 +23,7 @@ def conll2lines(path_in):
         buf.append(token)
     if len(buf) != 0:
         sentences.append(buf)
-    return sentences 
+    return sentences
 
 def run(path_in, path_out):
     # print("[nlppreprocess.conll2lines] Processing ...")
