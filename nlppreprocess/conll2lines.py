@@ -2,14 +2,13 @@
 
 import argparse
 
-import utils
-
+from . import utils
 
 def conll2lines(path_in):
     sentences = []
     buf = []
     for line in open(path_in):
-        items = line.decode("utf-8").strip().split()
+        items = line.strip().split()
         if len(items) == 0:
             continue
         index = int(items[0])
@@ -29,7 +28,6 @@ def run(path_in, path_out):
     # print("[nlppreprocess.conll2lines] Processing ...")
     sentences = conll2lines(path_in)
     utils.write_sentences(sentences, path_out)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -2,7 +2,7 @@
 
 import argparse
 
-import utils
+from . import utils
 
 def run(path_in, path_out):
     # print("[nlppreprocess.flatten] Processing ...")
@@ -12,11 +12,10 @@ def run(path_in, path_out):
         for s in iterator:
             for w in s:
                 if is_begin:
-                    f.write("%s" % w.encode("utf-8"))
+                    f.write("%s" % w)
                     is_begin = False
                 else:
-                    f.write(" %s" % w.encode("utf-8"))
-
+                    f.write(" %s" % w)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

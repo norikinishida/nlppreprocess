@@ -40,7 +40,7 @@ def main(args):
 
     nlppreprocess.create_vocabulary.run(
         os.path.join(path_root, "concat.conll.tokenized.lowercased.replace_digits"),
-        os.path.join(path_root, "vocab"),
+        os.path.join(path_root, "vocab.txt"),
         prune_at=50000,
         min_count=5,
         special_words=[])
@@ -50,7 +50,7 @@ def main(args):
     nlppreprocess.replace_rare_words.run(
         filepaths_in,
         filepaths_out,
-        path_vocab=os.path.join(path_root, "vocab"))
+        path_vocab=os.path.join(path_root, "vocab.txt"))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

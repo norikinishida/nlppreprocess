@@ -2,8 +2,7 @@
 
 import argparse
 
-import utils
-
+from . import utils
 
 class ConvertTextlinesToChars(object):
     def __init__(self, path):
@@ -11,7 +10,6 @@ class ConvertTextlinesToChars(object):
 
     def __iter__(self):
         for line in open(self.path):
-            line = line.decode("utf-8")
             all_tokens = [self.transform(c) for c in line]
             yield all_tokens
 

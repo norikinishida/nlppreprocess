@@ -2,8 +2,7 @@
 
 import argparse
 
-import utils
-
+from . import utils
 
 class AppendEOS(object):
     def __init__(self, iterator):
@@ -18,7 +17,6 @@ def run(path_in, path_out):
     iterator = utils.read_sentences(path_in)
     iterator = AppendEOS(iterator)
     utils.write_sentences(iterator, path_out)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

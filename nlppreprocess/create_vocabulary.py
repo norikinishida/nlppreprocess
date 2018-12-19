@@ -2,16 +2,14 @@
 
 import argparse
 from collections import Counter, OrderedDict
-import cPickle as pkl
 import os
 
-import utils
-
+from . import utils
 
 def run(path_corpus, path_vocab, prune_at, min_count, special_words, with_unk=True):
     assert os.path.exists(path_corpus)
     assert not os.path.exists(path_vocab)
-    assert path_vocab.endswith("vocab")
+    assert path_vocab.endswith("vocab.txt")
 
     print("[nlppreprocess.create_vocabulary] Processing ...")
     print("[nlppreprocess.create_vocabulary] PRUNE AT=%d" % prune_at)
@@ -41,13 +39,11 @@ def run(path_corpus, path_vocab, prune_at, min_count, special_words, with_unk=Tr
     else:
         print("[nlppreprocess.create_vocabulary] Vocabulary size (w/o '<UNK>')=%d" % len(vocab))
 
-    pkl.dump(vocab, open(path_vocab, "wb"))
-    print("[nlppreprocess.create_vocabulary] Saved the vocabulary (pickle) to %s" % path_vocab)
-    with open(path_vocab + ".txt", "w") as f:
+    with open(path_vocab, "w") as f:
         for w, w_id in vocab.items():
             freq = frequencies[w]
-            f.write("%s\t%d\t%d\n" % (w.encode("utf-8"), w_id, freq))
-    print("[nlppreprocess.create_vocabulary] Saved the vocabulary (text) to %s" % (path_vocab + ".txt"))
+            f.write("%s\t%d\t%d\n" % (w, w_id, freq))
+    print("[nlppreprocess.create_vocabulary] Saved the vocabulary (text) to %s" % path_vocab)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -64,7 +60,7 @@ if __name__ == "__main__":
     min_count = args.min_count
     special_words = args.special
 
-    run(path_corpus=path_corpus, 
+    run(path_corpus=path_corpus,
         path_vocab=path_vocab,
         prune_at=prune_at,
         min_count=min_count,

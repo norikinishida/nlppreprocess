@@ -5,8 +5,7 @@ import argparse
 import nltk
 from nltk.tokenize import word_tokenize
 
-import utils
-
+from . import utils
 
 sent_detector = nltk.data.load("tokenizers/punkt/english.pickle")
 class Tokenizer_with_nltk(object):
@@ -27,7 +26,6 @@ def run(path_in, path_out):
     iterator = utils.read_sentences(path_in)
     iterator = Tokenizer_with_nltk(iterator)
     utils.write_sentences(iterator, path_out)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

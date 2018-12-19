@@ -2,7 +2,6 @@
 
 import argparse
 
-
 def run(paths_in, path_out):
     # print("[nlppreprocess.concat] Processing ...")
     with open(path_out, "w") as f:
