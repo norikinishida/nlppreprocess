@@ -2,29 +2,20 @@
 
 import argparse
 
-import nltk
-from nltk.tokenize import word_tokenize
-
 from . import utils
 
-sent_detector = nltk.data.load("tokenizers/punkt/english.pickle")
-class Tokenizer_with_nltk(object):
+class AppendEOS(object):
     def __init__(self, iterator):
         self.iterator = iterator
 
     def __iter__(self):
         for s in self.iterator:
-            s = " ".join(s)
-            all_tokens = []
-            for s_i in sent_detector.tokenize(s):
-                tokens = word_tokenize(s_i)
-                all_tokens.extend(tokens)
-            yield all_tokens
+            yield s + ["<EOS>"]
 
 def run(path_in, path_out):
-    # print("[nlppreprocess.tokenizer] Processing ...")
+    # print("[textpreprocessor.append_eos] Processing ...")
     iterator = utils.read_sentences(path_in)
-    iterator = Tokenizer_with_nltk(iterator)
+    iterator = AppendEOS(iterator)
     utils.write_sentences(iterator, path_out)
 
 if __name__ == "__main__":
@@ -37,4 +28,3 @@ if __name__ == "__main__":
     path_out = args.output
 
     run(path_in=path_in, path_out=path_out)
-

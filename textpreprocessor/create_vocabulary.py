@@ -11,10 +11,10 @@ def run(path_corpus, path_vocab, prune_at, min_count, special_words, with_unk=Tr
     assert not os.path.exists(path_vocab)
     assert path_vocab.endswith("vocab.txt")
 
-    print("[nlppreprocess.create_vocabulary] Processing ...")
-    print("[nlppreprocess.create_vocabulary] PRUNE AT=%d" % prune_at)
-    print("[nlppreprocess.create_vocabulary] MINIMUM COUNT=%d" % min_count)
-    print("[nlppreprocess.create_vocabulary] SPECIAL WORDS=%s" % special_words)
+    print("[textpreprocessor.create_vocabulary] Processing ...")
+    print("[textpreprocessor.create_vocabulary] PRUNE AT=%d" % prune_at)
+    print("[textpreprocessor.create_vocabulary] MINIMUM COUNT=%d" % min_count)
+    print("[textpreprocessor.create_vocabulary] SPECIAL WORDS=%s" % special_words)
 
     iterator = utils.read_sentences(path_corpus)
     counter = Counter()
@@ -35,15 +35,15 @@ def run(path_corpus, path_vocab, prune_at, min_count, special_words, with_unk=Tr
         if not "<UNK>" in vocab.keys():
             vocab["<UNK>"] = len(vocab)
             frequencies["<UNK>"] = 0 # TODO
-        print("[nlppreprocess.create_vocabulary] Vocabulary size (w/ '<UNK>')=%d" % len(vocab))
+        print("[textpreprocessor.create_vocabulary] Vocabulary size (w/ '<UNK>')=%d" % len(vocab))
     else:
-        print("[nlppreprocess.create_vocabulary] Vocabulary size (w/o '<UNK>')=%d" % len(vocab))
+        print("[textpreprocessor.create_vocabulary] Vocabulary size (w/o '<UNK>')=%d" % len(vocab))
 
     with open(path_vocab, "w") as f:
         for w, w_id in vocab.items():
             freq = frequencies[w]
             f.write("%s\t%d\t%d\n" % (w, w_id, freq))
-    print("[nlppreprocess.create_vocabulary] Saved the vocabulary (text) to %s" % path_vocab)
+    print("[textpreprocessor.create_vocabulary] Saved the vocabulary (text) to %s" % path_vocab)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

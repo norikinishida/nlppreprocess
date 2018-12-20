@@ -10,14 +10,14 @@ NLTK is required for tokenization.
 
 ```
 $ cd /path/to/hoge
-$ git clone https://github.com/norikinishida/nlppreprocess.git
+$ git clone https://github.com/norikinishida/textpreprocessor.git
 $ vim ~/.zshrc
 ```
 
 Please add the following line in your .zshrc (or .bashrc, etc.).
 
 ```
-export PYTHONPATH=/path/to/hoge/nlppreprocess:$PYTHONPATH
+export PYTHONPATH=/path/to/hoge/textpreprocessor:$PYTHONPATH
 ```
 
 ## 3. How to use ##
@@ -29,8 +29,8 @@ Here, we assume that we have 10,000 English raw documents (i.e., raw_0000.txt〜
 ### Tokenization ###
 
 ```python
-import nlppreprocess.tokenizer
-nlppreprocess.tokenizer.run(
+import textpreprocessor.tokenizer
+textpreprocessor.tokenizer.run(
     "/path/to/raw/raw_0000.txt",
     "/path/to/outdir/raw_0000.txt.tokenized")
 ```
@@ -38,15 +38,15 @@ nlppreprocess.tokenizer.run(
 However, for tokenization, I recommend using the Stanford CoreNLP or PTBTokenizer in stead of NLTK.
 
 ```
-$ python nlppreprocess/make_filelist.py --input_dir /path/to/raw --output_dir /path/to/outdir --filelist_name filelist.txt --begin raw --end txt
+$ python textpreprocessor/make_filelist.py --input_dir /path/to/raw --output_dir /path/to/outdir --filelist_name filelist.txt --begin raw --end txt
 $ ./corenlp.sh /path/to/outdir/filelist.txt /path/to/outdir
 ```
 
 These commands will generate CoNLL-format files ```/path/to/outdir/raw_{0000〜9999}.txt.conll```.
 
 ```python
-import nlppreprocess.conll2lines
-nlppreprocess.conll2lines.run(
+import textpreprocessor.conll2lines
+textpreprocessor.conll2lines.run(
     "/path/to/outdir/raw_0000.txt.conll",
     "/path/to/outdir/raw_0000.txt.tokenized")
 ```
@@ -54,8 +54,8 @@ nlppreprocess.conll2lines.run(
 ### Lowercasing ###
 
 ```python
-import nlppreprocess.lowercase
-nlppreprocess.lowercase.run(
+import textpreprocessor.lowercase
+textpreprocessor.lowercase.run(
     "/path/to/outdir/raw_0000.txt.tokenized",
     "/path/to/outdir/raw_0000.txt.tokenized.lowercased")
 ```
@@ -67,8 +67,8 @@ e.g.,
 - after:  "$ 777 million of 7.77 % senior notes due oct. 77 , 7777 ,"
 
 ```python
-import nlppreprocess.replace_digits
-nlppreprocess.replace_digits.run(
+import textpreprocessor.replace_digits
+textpreprocessor.replace_digits.run(
     "/path/to/outdir/raw_0000.txt.tokenized.lowercased",
     "/path/to/outdir/raw_0000.txt.tokenized.lowercased.replace_digits")
 ```
@@ -78,13 +78,13 @@ nlppreprocess.replace_digits.run(
 1. Please concatenate the documents to build a vocabulary. Here, we assume that 8,000 documents ```/path/to/outdir/rar_{0000〜7999}.txt.tokenized.lowercased.replace_digits``` are to used for training.
 
 ```python
-import nlppreprocess.concat
+import textpreprocessor.concat
 
 # Get a list of paths to training documents
 filepaths = aggregate_training_paths() # => ["/path/to/outdir/raw_0000.txt.tokenized.lowercased.replace_digits", .., "/path/to/outdir/raw_7999.txt.tokenized.lowercased.replace_digits"]
 
 # Concatenate them into a single file
-nlppreprocess.concat.run(
+textpreprocessor.concat.run(
     filepaths,
     "/path/to/outdir/concat.tokenized.lowercased.replace_digits")
 ```
@@ -92,8 +92,8 @@ nlppreprocess.concat.run(
 2. Then, build a vocabulary.
 
 ```python
-import nlppreprocess.create_vocabulary
-nlppreprocess.create_vocabulary.run(
+import textpreprocessor.create_vocabulary
+textpreprocessor.create_vocabulary.run(
     "/path/to/outdir/concat.tokenized.lowercased.replace_digits",
     "path/to/outdir/vocab",
     prune_at=100000, # the maximum number of vocab. size
@@ -108,19 +108,19 @@ If you set special_words as ["A", "B", "C"], the built vocabulary contains these
 Replace tokens that are not contained in the built vocabulary with "\<UNK\>"
 
 ```python
-import nlppreprocess.replace_rare_words
+import textpreprocessor.replace_rare_words
 path_in = "/path/to/outdir/raw_0000.txt.tokenized.lowercased.replace_digits"
 path_out = "/path/to/outdir/raw_0000.txt.preprocessed"
 path_vocab = "/path/to/outdir/vocab"
-nlppreprocess.replace_rare_words.run(
+textpreprocessor.replace_rare_words.run(
     path_in, path_out, path_vocab)
 ```
 
 ### Other functions ###
-    - nlppreprocess.append_eos:
+    - textpreprocessor.append_eos:
         - appends "<EOS>" at the end of each line
-    - nlppreprocess.split_corpus
+    - textpreprocessor.split_corpus
         - randomly splits a single corpus (i.e., a list of sentences) into train/test files
-    - nlppreprocess.convert_textlines_to_characters
+    - textpreprocessor.convert_textlines_to_characters
         - convert a corpus to character sequences (e.g., "H e l l o <SPACE> w o r l d <EOL>")
 

@@ -35,11 +35,11 @@ def count_UNK_rate(iterator):
             if w == "<UNK>":
                 n_unk += 1
         n_total += len(s)
-    print("[nlppreprocess.replace_rare_words] # of '<UNK>' tokens=%d (%d/%d=%.2f%%)" % \
+    print("[textpreprocessor.replace_rare_words] # of '<UNK>' tokens=%d (%d/%d=%.2f%%)" % \
             (n_unk, n_unk, n_total, float(n_unk)/n_total * 100))
 
 def run(path_in, path_out, path_vocab=None, vocab=None):
-    # print("[nlppreprocess.replace_rare_words] Processing ...")
+    # print("[textpreprocessor.replace_rare_words] Processing ...")
     if vocab is None:
         assert path_vocab.endswith("vocab.txt")
         vocab = read_vocab(path_vocab)
@@ -55,7 +55,7 @@ def run(path_in, path_out, path_vocab=None, vocab=None):
         path_in_list = path_in
         path_out_list = path_out
     else:
-        print("[nlppreprocess.replace_rare_words] Error: arguments path_in and path_out must be type of str or list.")
+        print("[textpreprocessor.replace_rare_words] Error: arguments path_in and path_out must be type of str or list.")
         sys.exit(-1)
     assert len(path_in_list) == len(path_out_list)
     for path_in, path_out in pyprind.prog_bar(list(zip(path_in_list, path_out_list))):

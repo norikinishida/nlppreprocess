@@ -5,7 +5,7 @@ import argparse
 from . import utils
 
 def run(path_in, path_out):
-    # print("[nlppreprocess.flatten] Processing ...")
+    # print("[textpreprocessor.flatten] Processing ...")
     iterator = utils.read_sentences(path_in)
     with open(path_out, "w") as f:
         is_begin = True

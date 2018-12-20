@@ -3,7 +3,7 @@
 import argparse
 
 def run(paths_in, path_out):
-    # print("[nlppreprocess.concat] Processing ...")
+    # print("[textpreprocessor.concat] Processing ...")
     with open(path_out, "w") as f:
         for path_in in paths_in:
             for s in open(path_in):
