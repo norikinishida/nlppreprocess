@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import argparse
 
 from . import utils
@@ -25,7 +23,6 @@ def conll2lines(path_in):
     return sentences
 
 def run(path_in, path_out):
-    # print("[textpreprocessor.conll2lines] Processing ...")
     sentences = conll2lines(path_in)
     utils.write_sentences(sentences, path_out)
 

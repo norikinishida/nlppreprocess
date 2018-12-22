@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import argparse
 
 import numpy as np
@@ -7,7 +5,6 @@ import numpy as np
 from . import utils
 
 def run(path_all, path_train, path_val, size):
-    # print("[textpreprocessor.split_corpus] Processing ...")
     iterator = utils.read_sentences(path_all)
 
     count = 0

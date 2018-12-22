@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 class WordIterator(object):
     def __init__(self, path):
         self.path = path

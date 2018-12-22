@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import argparse
 
 from . import utils
@@ -13,7 +11,6 @@ class Lowercase(object):
             yield [w.lower() for w in s]
 
 def run(path_in, path_out):
-    # print("[textpreprocessor.lowercase] Processing ...")
     iterator = utils.read_sentences(path_in)
     iterator = Lowercase(iterator)
     utils.write_sentences(iterator, path_out)

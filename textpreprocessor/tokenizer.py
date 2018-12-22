@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import argparse
 
 import nltk
@@ -22,7 +20,6 @@ class Tokenizer_with_nltk(object):
             yield all_tokens
 
 def run(path_in, path_out):
-    # print("[textpreprocessor.tokenizer] Processing ...")
     iterator = utils.read_sentences(path_in)
     iterator = Tokenizer_with_nltk(iterator)
     utils.write_sentences(iterator, path_out)

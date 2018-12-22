@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import argparse
 import sys
 
@@ -39,16 +37,12 @@ def count_UNK_rate(iterator):
             (n_unk, n_unk, n_total, float(n_unk)/n_total * 100))
 
 def run(path_in, path_out, path_vocab=None, vocab=None):
-    # print("[textpreprocessor.replace_rare_words] Processing ...")
     if vocab is None:
         assert path_vocab.endswith("vocab.txt")
         vocab = read_vocab(path_vocab)
     assert isinstance(vocab, list)
     vocab = {w:w for w in vocab}
     if isinstance(path_in, str) and isinstance(path_out, str):
-        path_in_list = [path_in]
-        path_out_list = [path_out]
-    elif isinstance(path_in, str) and isinstance(path_out, str):
         path_in_list = [path_in]
         path_out_list = [path_out]
     elif isinstance(path_in, list) and isinstance(path_out, list):
