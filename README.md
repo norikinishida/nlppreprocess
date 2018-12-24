@@ -75,7 +75,7 @@ textpreprocessor.replace_digits.run(
 
 ### Building a vocabulary ###
 
-1. Please concatenate the documents to build a vocabulary. Here, we assume that 8,000 documents ```/path/to/outdir/rar_{0000〜7999}.txt.tokenized.lowercased.replace_digits``` are to used for training.
+1. Concatenate the document files used to build a vocabulary. Here, we use the 8,000 documents ```/path/to/outdir/rar_{0000〜7999}.txt.tokenized.lowercased.replace_digits```.
 
 ```python
 import textpreprocessor.concat
@@ -101,11 +101,11 @@ textpreprocessor.create_vocabulary.run(
     special_words=[]) # to avoid removing special word types such as <EOS>
 ```
 
-If you set special_words as ["A", "B", "C"], the built vocabulary contains these three word types in it.
+If you set special_words as ["\<BOS\>", "\<EOS\>"], the resulting vocabulary contains these two symbols in it.
 
 ### Replacing rare words ###
 
-Replace tokens that are not contained in the built vocabulary with "\<UNK\>"
+Replace rare tokens (that are NOT contained in the built vocabulary) with "\<UNK\>"
 
 ```python
 import textpreprocessor.replace_rare_words
