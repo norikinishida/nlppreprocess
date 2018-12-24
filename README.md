@@ -1,12 +1,12 @@
 # A Tool for Preprocessing Natural Language Text #
 
-## 1. Required Package ##
+## Required Package ##
 
-- nltk (optional)
+- NLTK (optional)
 
-NLTK is required for tokenization. 
+NLTK is used in tokenization.
 
-## 2. Setting ##
+## Setting ##
 
 ```
 $ cd /path/to/hoge
@@ -20,9 +20,9 @@ Please add the following line in your .zshrc (or .bashrc, etc.).
 export PYTHONPATH=/path/to/hoge/textpreprocessor:$PYTHONPATH
 ```
 
-## 3. How to use ##
+## How to use ##
 
-Please check ```./run.sh``` to see examples.
+Please see ```./run.sh```.
 
 Here, we assume that we have 10,000 English raw documents (i.e., raw_0000.txt〜raw_9999.txt) each of which consists of multiple sentences.
 
@@ -35,7 +35,7 @@ textpreprocessor.tokenizer.run(
     "/path/to/outdir/raw_0000.txt.tokenized")
 ```
 
-However, for tokenization, I recommend using the Stanford CoreNLP or PTBTokenizer in stead of NLTK.
+I recommend using the Stanford CoreNLP or PTBTokenizer instead of NLTK.
 
 ```
 $ python textpreprocessor/make_filelist.py --input_dir /path/to/raw --output_dir /path/to/outdir --filelist_name filelist.txt --begin raw --end txt
@@ -60,7 +60,7 @@ textpreprocessor.lowercase.run(
     "/path/to/outdir/raw_0000.txt.tokenized.lowercased")
 ```
 
-### Replacing digit to '7' ###
+### Replacing digits ###
 
 e.g.,
 - before: "$ 150 million of 8.55 % senior notes due oct. 15 , 2009 ,"
@@ -95,7 +95,7 @@ textpreprocessor.concat.run(
 import textpreprocessor.create_vocabulary
 textpreprocessor.create_vocabulary.run(
     "/path/to/outdir/concat.tokenized.lowercased.replace_digits",
-    "path/to/outdir/vocab",
+    "path/to/outdir/vocab.txt",
     prune_at=100000, # the maximum number of vocab. size
     min_count=5, # threshold for filtering rare word types
     special_words=[]) # to avoid removing special word types such as <EOS>
@@ -103,7 +103,7 @@ textpreprocessor.create_vocabulary.run(
 
 If you set special_words as ["A", "B", "C"], the built vocabulary contains these three word types in it.
 
-### Replacing rare word types ###
+### Replacing rare words ###
 
 Replace tokens that are not contained in the built vocabulary with "\<UNK\>"
 
@@ -111,7 +111,7 @@ Replace tokens that are not contained in the built vocabulary with "\<UNK\>"
 import textpreprocessor.replace_rare_words
 path_in = "/path/to/outdir/raw_0000.txt.tokenized.lowercased.replace_digits"
 path_out = "/path/to/outdir/raw_0000.txt.preprocessed"
-path_vocab = "/path/to/outdir/vocab"
+path_vocab = "/path/to/outdir/vocab.txt"
 textpreprocessor.replace_rare_words.run(
     path_in, path_out, path_vocab)
 ```
