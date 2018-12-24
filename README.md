@@ -1,4 +1,4 @@
-# A Tool for Preprocessing Natural Language Text #
+# textpreprocessor
 
 ## Required packages ##
 
