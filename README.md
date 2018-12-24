@@ -1,6 +1,6 @@
 # A Tool for Preprocessing Natural Language Text #
 
-## Required Package ##
+## Required packages ##
 
 - NLTK (optional)
 
