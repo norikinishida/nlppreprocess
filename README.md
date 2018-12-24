@@ -1,5 +1,7 @@
 # textpreprocessor
 
+A Python library for preprocessing (English) texts.
+
 ## Required packages ##
 
 - NLTK (optional)
