@@ -8,11 +8,10 @@ def run(paths_in, path_out):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--inputs", nargs="+", type=str, required=True)
+    parser.add_argument("--inputs", type=str, nargs="+", required=True)
     parser.add_argument("--output", type=str, required=True)
     args = parser.parse_args()
 
     paths_in = args.inputs
     path_out = args.output
-
     run(paths_in=paths_in, path_out=path_out)

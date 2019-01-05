@@ -1,6 +1,6 @@
 import argparse
 
-from . import utils
+from .iterators import read_sentences, write_sentences
 
 class Lowercase(object):
     def __init__(self, iterator):
@@ -11,17 +11,16 @@ class Lowercase(object):
             yield [w.lower() for w in s]
 
 def run(path_in, path_out):
-    iterator = utils.read_sentences(path_in)
+    iterator = read_sentences(path_in)
     iterator = Lowercase(iterator)
-    utils.write_sentences(iterator, path_out)
+    write_sentences(iterator, path_out)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", help="path to input corpus", type=str, required=True)
-    parser.add_argument("--output", help="path to output corpus", type=str, required=True)
+    parser.add_argument("--input", type=str, required=True)
+    parser.add_argument("--output", type=str, required=True)
     args = parser.parse_args()
 
     path_in = args.input
     path_out = args.output
-
     run(path_in=path_in, path_out=path_out)

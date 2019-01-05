@@ -1,9 +1,9 @@
 import argparse
 
-from . import utils
+from .iterators import read_sentences
 
 def run(path_in, path_out):
-    iterator = utils.read_sentences(path_in)
+    iterator = read_sentences(path_in)
     with open(path_out, "w") as f:
         is_begin = True
         for s in iterator:

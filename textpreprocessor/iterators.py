@@ -7,9 +7,6 @@ class WordIterator(object):
             yield s.strip().split()
 
 def read_sentences(path_in):
-    # f = open(path_in)
-    # sents = [s.strip().split() for s in f]
-    # return sents
     return WordIterator(path_in)
 
 def write_sentences(iterator, path_out):
