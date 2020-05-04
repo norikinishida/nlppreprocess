@@ -8,20 +8,6 @@ A Python library for preprocessing (English) texts.
 
 NLTK is used in tokenization.
 
-## Setting ##
-
-```
-$ cd /path/to/hoge
-$ git clone https://github.com/norikinishida/textpreprocessor.git
-$ vim ~/.zshrc
-```
-
-Please add the following line in your .zshrc (or .bashrc, etc.).
-
-```
-export PYTHONPATH=/path/to/hoge/textpreprocessor:$PYTHONPATH
-```
-
 ## How to use ##
 
 Please see ```./run.sh```.
