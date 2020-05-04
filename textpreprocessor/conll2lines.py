@@ -6,8 +6,8 @@ def conll2lines(path_in):
     sentences = []
     buf = []
     for line in open(path_in):
-        items = line.strip().split()
-        if len(items) == 0:
+        items = line.strip().split("\t")
+        if len(items) == 1:
             continue
         index = int(items[0])
         token = items[1]
