@@ -1,5 +1,7 @@
 # textpreprocessor
 
+(c) 2019 Noriki Nishida
+
 A Python library for preprocessing (English) texts.
 
 ## Required packages ##
